@@ -9,7 +9,7 @@ st.set_page_config(page_title="Diabetes Risk Factors Dashboard", layout="wide")
 
 # --- Sidebar Navigation ---
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to:", ["Introduction", "H1", "H2", "H3", "H4", "H5", "Conclusion"])
+page = st.sidebar.radio("Go to:", ["Introduction", "**H1**: Lifestyle Habits and diabetes", "**H2**: Education and diabetes prevention", "**H3**: Healthcare access and diabetes", "**H4**: Self-rated health and diabetes", "**H5**: Pre-existing health conditions and diabetes", "Conclusion"])
 
 # --- Header ---
 st.markdown("<h1 style='text-align: center;'>Diabetes Risk Factors Dashboard</h1>", unsafe_allow_html=True)
@@ -53,7 +53,7 @@ if page == "Introduction":
     st.markdown("---")
     st.info("Use the sidebar to explore each hypothesis and see how these factors relate to diabetes risk.")
     
-elif page == "H1: Lifestyle Habits and diabetes":
+elif page == "**H1**: Lifestyle Habits and diabetes":
     st.subheader("Hypothesis 1: Lifestyle Habits and diabetes")
     st.write("Hypothesis: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, and heavy alcohol consumption – are associated with a higher risk of diabetes.")
     st.write("Rationale: Lifestyle factors are the most modifiable determinants of health. Demonstrating their impact provides evidence for targeted prevention campaigns and behavioural interventions.")
@@ -66,7 +66,7 @@ elif page == "H3: Healthcare access and diabetes":
     st.subheader("Hypothesis 3")
     st.write("Content for Hypothesis 3 will go here.")
     
-elif page == "H4: Self-rated health and diabetes":
+elif page == "**H4**: Self-rated health and diabetes":
     st.subheader("Hypothesis 4")
     st.write("Content for Hypothesis 4 will go here.")
     
