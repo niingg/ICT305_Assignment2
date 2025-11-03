@@ -55,7 +55,7 @@ if page == "Introduction":
     
 elif page == "H1: Lifestyle Habits and diabetes":
     st.subheader("Hypothesis 1: Lifestyle Habits and diabetes")
-    st.write("**Hypothesis**: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, and heavy alcohol consumption – are associated with a higher risk of diabetes.")
+    st.write("Hypothesis: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, and heavy alcohol consumption – are associated with a higher risk of diabetes.")
     st.write("Rationale: Lifestyle factors are the most modifiable determinants of health. Demonstrating their impact provides evidence for targeted prevention campaigns and behavioural interventions.")
     
 elif page == "H2: Education and diabetes prevention":
