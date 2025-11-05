@@ -59,11 +59,11 @@ elif page == "**H1**: Lifestyle Habits and diabetes":
     st.write("Let's explore all variables first. The graph below shows how each lifestyle habit relates to diabetes prevalence in the dataset.")
     # st.write("Rationale: Lifestyle factors are the most modifiable determinants of health. Demonstrating their impact provides evidence for targeted prevention campaigns and behavioural interventions.")
     
-elif page == "H2: Education and diabetes prevention":
+elif page == "**H2**: Education and diabetes prevention":
     st.subheader("Hypothesis 2")
     st.write("Content for Hypothesis 2 will go here.")
     
-elif page == "H3: Healthcare access and diabetes":
+elif page == "**H3**: Healthcare access and diabetes":
     st.subheader("Hypothesis 3")
     st.write("Content for Hypothesis 3 will go here.")
     
@@ -71,7 +71,7 @@ elif page == "**H4**: Self-rated health and diabetes":
     st.subheader("Hypothesis 4")
     st.write("Content for Hypothesis 4 will go here.")
     
-elif page == "H5: Pre-existing health conditions and diabetes":
+elif page == "**H5**: Pre-existing health conditions and diabetes":
     st.subheader("Hypothesis 5")
     st.write("Content for Hypothesis 5 will go here.")
     
