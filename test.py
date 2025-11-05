@@ -19,7 +19,7 @@ st.markdown("---")  # a line separator
 if page == "Introduction":
     st.subheader("Introduction")
     st.write("Welcome to the Diabetes Risk Factors Dashboard. Here you can explore various factors associated with diabetes risk.")
-    st.write("salwa and regina will rephrase this section later!")
+    st.write("SALWA AND REGINA TO TWEAK THIS SECTION")
 
     st.subheader("Case Introduction")
     st.write("""
