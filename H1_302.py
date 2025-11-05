@@ -9,7 +9,7 @@ from ipywidgets import VBox, HBox, Dropdown, ToggleButtons, Output
 from IPython.display import display
 
 ## read dataset
-df_brfss = pd.read_csv("diabetes_binary_5050split_health_indicators_BRFSS2015.csv")
+df_brfss = pd.read_csv("diabetes.csv")
 
 ## standardising column names 
 df_brfss.columns = df_brfss.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-','_')
