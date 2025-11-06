@@ -436,7 +436,8 @@ def create_physical_activity_demographics_chart(df):
 def create_functional_limitations_chart(df):
     """
     Create a bar chart showing diabetes rates by number of functional limitations.
-    Counts: diffwalk, diffbathing (if available), diffcognition (if available), etc.
+    Counts: Physical Activity, General Health, Mental Health, Physical Health, Difficulty Walking
+    Creates a composite score from 0-5 limitations.
     
     Parameters:
     -----------
@@ -451,23 +452,42 @@ def create_functional_limitations_chart(df):
     df = df.copy()
     df.columns = df.columns.str.lower()
     
-    # Count functional limitations: diffwalk is the primary one, but check for others
-    # diffwalk = difficulty walking
-    limitation_cols = [col for col in df.columns if 'diff' in col.lower()]
+    # Create composite limitation score (0-5)
+    # Count limitations based on:
+    # 1. No physical activity (physactivity == 0)
+    # 2. Poor general health (genhlth >= 4, where 5 is worst)
+    # 3. Mental health days (menthlth > 0)
+    # 4. Physical health days (physhlth > 0)
+    # 5. Difficulty walking (diffwalk == 1)
     
-    if 'diffwalk' in limitation_cols:
-        # If only diffwalk available, use it
-        df['limitation_count'] = df['diffwalk'].astype(int)
-    else:
-        # Otherwise sum all limitation columns
-        df['limitation_count'] = df[limitation_cols].sum(axis=1) if limitation_cols else 0
+    df['limitation_count'] = 0
+    
+    # Physical activity limitation
+    if 'physactivity' in df.columns:
+        df.loc[df['physactivity'] == 0, 'limitation_count'] += 1
+    
+    # General health limitation
+    if 'genhlth' in df.columns:
+        df.loc[df['genhlth'] >= 4, 'limitation_count'] += 1
+    
+    # Mental health limitation
+    if 'menthlth' in df.columns:
+        df.loc[df['menthlth'] > 0, 'limitation_count'] += 1
+    
+    # Physical health limitation
+    if 'physhlth' in df.columns:
+        df.loc[df['physhlth'] > 0, 'limitation_count'] += 1
+    
+    # Difficulty walking limitation
+    if 'diffwalk' in df.columns:
+        df.loc[df['diffwalk'] == 1, 'limitation_count'] += 1
     
     limit_data = df.groupby('limitation_count')['diabetes_binary'].mean() * 100
     limit_counts = df.groupby('limitation_count').size()
     
     limit_labels = {
-        0: 'No Limitations',
-        1: '1 Limitation',
+        0: 'No Other Limitations',
+        1: '1 Limitations',
         2: '2 Limitations',
         3: '3 Limitations',
         4: '4 Limitations',
@@ -475,44 +495,45 @@ def create_functional_limitations_chart(df):
     }
     
     limit_df = pd.DataFrame({
-        'Limitations': [limit_labels.get(i, f'{i} Limitations') for i in limit_data.index],
-        'Diabetes Rate (%)': limit_data.values,
-        'Count': limit_counts.values
+        'Limitations': [limit_labels.get(i, f'{i} Limitations') for i in range(6)],
+        'Diabetes Rate (%)': [limit_data.get(i, 0) for i in range(6)],
+        'Count': [limit_counts.get(i, 0) for i in range(6)]
     })
     
     fig = go.Figure()
     
-    # Use color gradient: lighter for no limitations, darker for more
-    colors_map = {
-        0: '#E8C6AE',
-        1: '#D9A580',
-        2: '#CA8456',
-        3: '#A64A47',
-        4: '#931A23',
-        5: '#5C0F14'
-    }
+    # Color gradient from yellow to dark red
+    colors = ["#FFF1A4", '#EEC8A3', '#DD9C7C', '#D24C49', '#A64A47', '#931A23']
     
     for i, (idx, row) in enumerate(limit_df.iterrows()):
-        color = colors_map.get(idx, '#931A23')
         fig.add_trace(go.Bar(
             x=[row['Limitations']],
             y=[row['Diabetes Rate (%)']],
             name=row['Limitations'],
-            marker=dict(color=color),
+            marker=dict(color=colors[i]),
             text=[f"{row['Diabetes Rate (%)']:.1f}%"],
             textposition='outside',
             customdata=[[row['Count']]],
-            hovertemplate='%{x}<br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0][0]:,}<extra></extra>',
+            hovertemplate='<b>%{x}</b><br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0][0]:,}<extra></extra>',
             showlegend=False,
         ))
     
     fig.update_layout(
-        title="Diabetes Rate by Functional Limitations",
-        xaxis_title="Number of Functional Limitations",
+        title="Diabetes Rate by No. of Pre-Existing Limitations",
+        xaxis_title="No. of Pre-Existing Conditions<br>(Physical Activity, General Health, Mental Health, Physical Health, Difficulty Walking)",
         yaxis_title="Diabetes Rate (%)",
         height=500,
         plot_bgcolor='white',
         paper_bgcolor='white',
+        hovermode='x unified',
+        legend=dict(
+            title='Number of Conditions',
+            orientation='v',
+            yanchor='top',
+            y=1,
+            xanchor='left',
+            x=1.02
+        )
     )
     
     fig.update_yaxes(range=[0, 100])
