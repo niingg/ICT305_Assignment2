@@ -19,12 +19,13 @@ from hypothesis_h4 import (
 
 from hypothesis_h5 import (
     create_preexisting_conditions_chart,
+    create_preexisting_conditions_demographics_chart,
     create_bmi_categories_chart,
     create_condition_count_chart,
 )
 
 # Load dataset
-df = pd.read_csv('diabetes.csv')
+df = pd.read_csv('diabetes_binary_5050split_health_indicators_BRFSS2015.csv')
 df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_')
 
 # ============================================================================
@@ -348,40 +349,37 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
     Pre-existing conditions include: Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol, and Elevated BMI (≥30).
     """)
 
-    # Create tabs for different visualizations
-    tab1, tab2, tab3 = st.tabs([
+# Create tabs for different visualizations
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "Individual Conditions",
         "By Demographics",
         "BMI Categories",
         "Condition Count"
     ])
 
     with tab1:
-        st.write("**Pre-existing Conditions by Demographics**")
-        st.write("Use the dropdown to switch between Age Group and Sex views:")
+        st.write("**Pre-existing Conditions and Diabetes Risk**")
+        st.write("Use the dropdown to sort by Prevalence (diabetes rate) or Relative Risk (yes/no ratio):")
         fig1 = create_preexisting_conditions_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
 
     with tab2:
-        st.write("**Diabetes Rate by BMI Category**")
-        st.write("Shows progression across 6 BMI classification levels with color gradient:")
-        fig2 = create_bmi_categories_chart(df)
+        st.write("**Pre-Existing Conditions by Demographics**")
+        st.write("Use the dropdown to switch between Age Group and Sex views:")
+        fig2 = create_preexisting_conditions_demographics_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
 
     with tab3:
-        st.write("**Effect of Multiple Pre-existing Conditions**")
-        st.write("Shows how diabetes risk increases with each additional condition:")
-        fig3 = create_condition_count_chart(df)
+        st.write("**Diabetes Rate by BMI Category**")
+        st.write("Shows progression across 6 BMI classification levels with color gradient:")
+        fig3 = create_bmi_categories_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
 
-    st.markdown("---")
-    st.subheader("Key Insights")
-    st.write("""
-    - Pre-existing conditions are strongly associated with higher diabetes risk
-    - BMI is one of the strongest individual predictors of diabetes
-    - Risk increases exponentially with each additional condition
-    - Cardiovascular risk factors and diabetes are closely intertwined
-    - Early screening and management of these conditions is crucial for diabetes prevention
-    """)
+    with tab4:
+        st.write("**Effect of Multiple Pre-existing Conditions**")
+        st.write("Shows how diabetes risk increases with each additional condition:")
+        fig4 = create_condition_count_chart(df)
+        st.plotly_chart(fig4, use_container_width=True)
 
 # ============================================================================
 # CONCLUSION
