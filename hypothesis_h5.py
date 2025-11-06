@@ -183,6 +183,218 @@ def create_preexisting_conditions_chart(df):
     
     return fig
 
+def create_preexisting_conditions_demographics_chart(df):
+    """
+    Create an interactive chart showing diabetes rates by pre-existing conditions across demographics.
+    Shows relationship between diabetes rates, number of pre-existing conditions, and age/sex.
+    
+    Conditions counted: stroke, heartdiseaseorattack, highbp, highchol, obesity (bmi >= 30)
+    
+    Dropdown allows switching between:
+    - Age Group (5 age bands)
+    - Sex (Female/Male)
+    
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The diabetes dataset
+    
+    Returns:
+    --------
+    plotly.graph_objects.Figure
+        Interactive figure with dropdown to switch between Age and Sex groupings
+    """
+    df = df.copy()
+    df.columns = df.columns.str.lower()
+    
+    # Create conditions count (0-5)
+    df['conditions_count'] = 0
+    df.loc[df['stroke'] == 1, 'conditions_count'] += 1
+    df.loc[df['heartdiseaseorattack'] == 1, 'conditions_count'] += 1
+    df.loc[df['highbp'] == 1, 'conditions_count'] += 1
+    df.loc[df['highchol'] == 1, 'conditions_count'] += 1
+    df.loc[df['bmi'] >= 30, 'conditions_count'] += 1
+    
+    # Create binary conditions variable (0 = no conditions, 1 = any conditions)
+    df['conditions_binary'] = 0
+    df.loc[df['conditions_count'] > 0, 'conditions_binary'] = 1
+    
+    # Create age groups
+    df['age_group'] = pd.cut(
+        df['age'],
+        bins=[0, 2, 5, 8, 11, 13],
+        labels=['18-29', '30-44', '45-59', '60-74', '75+'],
+        include_lowest=True
+    )
+    
+    # Create sex mapping
+    sex_mapping = {0: 'Female', 1: 'Male'}
+    df['sex_label'] = df['sex'].map(sex_mapping)
+    
+    # ========== AGE GROUPS ==========
+    age_conditions_grouped = df.groupby(['age_group', 'conditions_binary'], observed=True)['diabetes_binary'].mean().reset_index()
+    age_conditions_grouped['diabetes_rate_pct'] = age_conditions_grouped['diabetes_binary'] * 100
+    age_conditions_grouped['Response'] = age_conditions_grouped['conditions_binary'].map({0: 'No', 1: 'Yes'})
+    age_conditions_counts = df.groupby(['age_group', 'conditions_binary'], observed=True).size().reset_index(name='Count')
+    age_conditions_grouped = age_conditions_grouped.merge(age_conditions_counts, on=['age_group', 'conditions_binary'])
+    
+    df_age_no = age_conditions_grouped[age_conditions_grouped['Response'] == 'No']
+    df_age_yes = age_conditions_grouped[age_conditions_grouped['Response'] == 'Yes']
+    
+    # ========== SEX GROUPS ==========
+    sex_conditions_grouped = df.groupby(['sex_label', 'conditions_binary'], observed=True)['diabetes_binary'].mean().reset_index()
+    sex_conditions_grouped['diabetes_rate_pct'] = sex_conditions_grouped['diabetes_binary'] * 100
+    sex_conditions_grouped['Response'] = sex_conditions_grouped['conditions_binary'].map({0: 'No', 1: 'Yes'})
+    sex_conditions_counts = df.groupby(['sex_label', 'conditions_binary'], observed=True).size().reset_index(name='Count')
+    sex_conditions_grouped = sex_conditions_grouped.merge(sex_conditions_counts, on=['sex_label', 'conditions_binary'])
+    
+    df_sex_no = sex_conditions_grouped[sex_conditions_grouped['Response'] == 'No']
+    df_sex_yes = sex_conditions_grouped[sex_conditions_grouped['Response'] == 'Yes']
+    
+    fig = go.Figure()
+    
+    # ========== AGE TRACES ==========
+    fig.add_trace(go.Bar(
+        x=df_age_no['age_group'].astype(str),
+        y=df_age_no['diabetes_rate_pct'],
+        name='No Pre-Existing Conditions',
+        marker=dict(color='#EEC8A3'),
+        text=[f"{val:.1f}" for val in df_age_no['diabetes_rate_pct']],
+        textposition='outside',
+        textfont=dict(size=11),
+        customdata=df_age_no[['Count']],
+        hovertemplate='<b>%{x}</b><br>Has Pre-Existing Conditions: No<br>Diabetes Rate (%): %{y:.1f}<br>Count: %{customdata[0]:,}<extra></extra>',
+        legendgroup='No',
+        showlegend=True,
+        visible=True
+    ))
+    
+    fig.add_trace(go.Bar(
+        x=df_age_yes['age_group'].astype(str),
+        y=df_age_yes['diabetes_rate_pct'],
+        name='Has Pre-Existing Conditions',
+        marker=dict(color='#931A23'),
+        text=[f"{val:.1f}" for val in df_age_yes['diabetes_rate_pct']],
+        textposition='outside',
+        textfont=dict(size=11),
+        customdata=df_age_yes[['Count']],
+        hovertemplate='<b>%{x}</b><br>Has Pre-Existing Conditions: Yes<br>Diabetes Rate (%): %{y:.1f}<br>Count: %{customdata[0]:,}<extra></extra>',
+        legendgroup='Yes',
+        showlegend=True,
+        visible=True
+    ))
+    
+    # ========== SEX TRACES ==========
+    fig.add_trace(go.Bar(
+        x=df_sex_no['sex_label'],
+        y=df_sex_no['diabetes_rate_pct'],
+        name='No Pre-Existing Conditions',
+        marker=dict(color='#EEC8A3'),
+        text=[f"{val:.1f}" for val in df_sex_no['diabetes_rate_pct']],
+        textposition='outside',
+        textfont=dict(size=11),
+        customdata=df_sex_no[['Count']],
+        hovertemplate='<b>%{x}</b><br>Has Pre-Existing Conditions: No<br>Diabetes Rate (%): %{y:.1f}<br>Count: %{customdata[0]:,}<extra></extra>',
+        legendgroup='No',
+        showlegend=False,
+        visible=False
+    ))
+    
+    fig.add_trace(go.Bar(
+        x=df_sex_yes['sex_label'],
+        y=df_sex_yes['diabetes_rate_pct'],
+        name='Has Pre-Existing Conditions',
+        marker=dict(color='#931A23'),
+        text=[f"{val:.1f}" for val in df_sex_yes['diabetes_rate_pct']],
+        textposition='outside',
+        textfont=dict(size=11),
+        customdata=df_sex_yes[['Count']],
+        hovertemplate='<b>%{x}</b><br>Has Pre-Existing Conditions: Yes<br>Diabetes Rate (%): %{y:.1f}<br>Count: %{customdata[0]:,}<extra></extra>',
+        legendgroup='Yes',
+        showlegend=False,
+        visible=False
+    ))
+    
+    # Create dropdown buttons
+    buttons = [
+        dict(
+            label='Age Group',
+            method='update',
+            args=[
+                {'visible': [True, True, False, False]},
+                {'xaxis': {'title': 'Age Group (Years)'}}
+            ]
+        ),
+        dict(
+            label='Sex',
+            method='update',
+            args=[
+                {'visible': [False, False, True, True]},
+                {'xaxis': {'title': 'Sex'}}
+            ]
+        )
+    ]
+    
+    # Update layout
+    fig.update_layout(
+        updatemenus=[dict(
+            active=0,
+            buttons=buttons,
+            direction='down',
+            pad={'r': 10, 't': 10},
+            showactive=True,
+            x=0.01,
+            xanchor='left',
+            y=1.15,
+            yanchor='top'
+        )],
+        title=dict(
+            text='Diabetes Rate by Demographics and Pre-Existing Conditions',
+            x=0.5,
+            xanchor='center'
+        ),
+        xaxis=dict(
+            title='Age Group (Years)',
+            showgrid=False,
+            showline=True,
+            linewidth=1,
+            linecolor='black',
+            ticks='outside',
+            ticklen=5,
+            tickwidth=1,
+            tickcolor='black'
+        ),
+        yaxis=dict(
+            title='Diabetes Rate (%)',
+            showgrid=False,
+            showline=True,
+            linewidth=1,
+            linecolor='black',
+            ticks='outside',
+            ticklen=5,
+            tickwidth=1,
+            tickcolor='black'
+        ),
+        barmode='group',
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        legend=dict(
+            title='Pre-Existing Conditions',
+            orientation='v',
+            yanchor='top',
+            y=1,
+            xanchor='right',
+            x=1.2
+        ),
+        height=600,
+        hovermode='closest',
+    )
+    
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=False)
+    fig.update_yaxes(showline=True, linewidth=1, linecolor='black', mirror=False, range=[0, 100])
+    
+    return fig
+
 
 def create_bmi_categories_chart(df):
     """
@@ -317,6 +529,7 @@ def create_bmi_categories_chart(df):
 
 
 def create_condition_count_chart(df):
+    
     """
     Create a bar chart showing diabetes rates by number of pre-existing conditions.
     
