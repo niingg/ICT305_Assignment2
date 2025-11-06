@@ -21,7 +21,6 @@ from hypothesis_h3 import (
     create_healthcare_coverage_chart,
     create_income_trends_dual_chart,
     create_access_barriers_chart,
-    create_preexisting_factors_chart,
 )
 
 from hypothesis_h4 import (
@@ -133,12 +132,26 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         st.write("Compares diabetes rates between people with and without each risk factor, including 95% confidence intervals:")
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - People who smoke or don’t exercise have much higher diabetes rates than those who don’t.
+        - Physical inactivity (62%) shows the strongest link with diabetes risk.
+        - Those with low fruit or vegetable intake also show slightly higher diabetes levels.
+        """)
     
     with tab2:
         st.write("**Diabetes Prevalence by Number of Risk Factors**")
         st.write("Shows how diabetes risk increases as more lifestyle risk factors accumulate:")
         fig1 = create_risk_factors_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - The more unhealthy habits a person has, the higher their diabetes risk.
+        - Diabetes rate increases from 38% (no risks) to nearly 60% (three risks).
+        - Having even one or two bad habits significantly raises the likelihood of diabetes.
+        """)
     
     with tab3:
         st.write("**Physical Activity vs Diabetes by Education, Age Group, and Sex**")
@@ -153,6 +166,13 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         facet_map = {"Education": "education", "Age Group": "age", "Sex": "sex"}
         fig2 = create_physical_activity_by_demographics_chart(df, facet_type=facet_map[facet_choice])
         st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Across all groups, physically active people have much lower diabetes rates than inactive ones.
+        - The gap is largest among older adults (60–74) and those with less education.
+        - Higher education and regular activity together lead to the lowest diabetes levels (as low as 36%).
+        """)
 
 # ============================================================================
 # H2: EDUCATION
@@ -181,24 +201,53 @@ elif page == "**H2**: Education and Diabetes Prevention":
         st.write("Shows the prevalence of healthy diet, physical activity, and regular checkups by education level:")
         fig1 = create_education_health_behaviors_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - People with higher education levels are more likely to eat well, stay active, and go for regular checkups.
+        - The rate of healthy diet, exercise, and screenings all rise from “Less than High School” to “College Graduate.
+        - This suggests that education improves awareness and discipline toward healthy living.
+        - College graduates show the highest rates of positive health habits in all categories.
+        """)
     
     with tab2:
         st.write("**Diabetes Rates Decline with Higher Education**")
         st.write("Clear trend showing diabetes rates decrease as education level increases:")
         fig2 = create_education_diabetes_trend_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - The rate of diabetes clearly decreases as education level increases.
+        - Those with less than high school have about 68% diabetes rate, while college graduates have around 40%.
+        - This shows that education plays a strong protective role against diabetes.
+        """)
     
     with tab3:
         st.write("**Diabetes by Income and Education Level**")
         st.write("Heatmap showing how both income and education interact to affect diabetes risk:")
         fig3 = create_income_diabetes_by_education_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - People with low income and low education have the highest diabetes rates across all groups.
+        - As income and education increase together, the diabetes rate drops steadily.
+        - The lowest diabetes rates appear among those with college education and higher income.
+        """)
     
     with tab4:
         st.write("**Education's Impact on Lifestyle and Diabetes**")
         st.write("Shows how education predicts lifestyle choices and diabetes rates:")
         fig4 = create_education_lifestyle_diabetes_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - With more education, people are more active and eat more fruits and vegetables.
+        - At the same time, diabetes rates drop steadily as education level rises.
+        - This shows a direct link between education, healthy habits, and lower diabetes risk.
+        """)
 
 # ============================================================================
 # H3: HEALTHCARE ACCESS
@@ -216,11 +265,10 @@ elif page == "**H3**: Healthcare Access and Diabetes":
     """)
 
     # Create tabs for different visualizations
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         "Coverage & Barriers",
         "Income Trends",
         "Access Barriers",
-        "Individual Conditions"
     ])
 
     with tab1:
@@ -233,7 +281,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         st.write("""
         - Diabetes rates are consistently higher among those without healthcare coverage or with cost barriers.
         - Low-income groups (<$25k) show the largest gap between “Yes” and “No” responses.
-        - High income groups (> $75k) show much lower diabetes rates and fewer barriers.
+        - High income groups (>$75k) show much lower diabetes rates and fewer barriers.
         """)
 
     with tab2:
@@ -262,21 +310,6 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         - Demonstrates that multiple healthcare challenges increase risk, not just add to it.
         """)
 
-    with tab4:
-        st.write("**Individual Cardiovascular Conditions**")
-        st.write("Shows how each condition independently affects diabetes prevalence:")
-        fig4 = create_preexisting_factors_chart(df)
-        st.plotly_chart(fig4, use_container_width=True)
-
-    st.markdown("---")
-    st.subheader("Key Insights")
-    st.write("""
-    - Healthcare access barriers significantly impact diabetes management and prevalence
-    - Lower income is strongly associated with higher diabetes rates AND worse healthcare access
-    - Multiple healthcare barriers compound the effect on diabetes risk
-    - Cardiovascular conditions are important indicators of diabetes risk
-    """)
-
 # ============================================================================
 # H4: SELF-RATED HEALTH
 # ============================================================================
@@ -304,33 +337,53 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         st.write("Dual-axis chart showing diabetes rate alongside mental and physical unhealthy days:")
         fig1 = create_health_trends_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Moving from Excellent to Poor self-rated health, diabetes rises sharply.
+        - Mental and physical unhealthy days increase in parallel.
+        - Patterns suggest mutual reinforcement of poor wellbeing and diabetes.
+        - Self-ratings serve as a strong early signal.
+        """)
 
     with tab2:
         st.write("**Functional Limitations Comparison**")
         st.write("Left: Difficulty walking | Right: Physical activity engagement")
         fig2 = create_functional_limitations_comparison_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Difficulty walking = much higher diabetes rate.
+        - Regular physical activity = lower diabetes rate.
+        - Mobility and activity act as strong risk/protective factors.
+        """)
 
     with tab3:
         st.write("**Physical Activity Impact Across Demographics**")
         st.write("Use the dropdown to switch between Age Group, Sex, and BMI Category:")
         fig3 = create_physical_activity_demographics_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - In every facet, active groups have lower diabetes rates.
+        - (60+) and obese groups gain the largest benefit from activity.
+        - Males are slightly higher than females across states, but the activity gap dominates.
+        """)
 
     with tab4:
         st.write("**Effect of Functional Limitations**")
         st.write("Shows diabetes rates by functional limitation status:")
         fig4 = create_functional_limitations_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
-
-    st.markdown("---")
-    st.subheader("Key Insights")
-    st.write("""
-    - Self-rated health is a powerful indicator of diabetes prevalence
-    - Both mental and physical unhealthy days correlate with diabetes
-    - Physical activity is protective against diabetes across ALL demographic groups
-    - Functional limitations substantially increase diabetes risk
-    """)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Having any physical limitation greatly increases the chance of diabetes.
+        - The difference between having no limitations and at least one is large and consistent.
+        - Even small mobility problems can indicate a higher risk of long-term illness.
+        """)
 
 # ============================================================================
 # H5: PRE-EXISTING CONDITIONS
@@ -376,10 +429,9 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         st.markdown("---")
         st.subheader("Key Insights")
         st.write("""
-        - Self-rated health is a powerful indicator of diabetes prevalence
-        - Both mental and physical unhealthy days correlate with diabetes
-        - Physical activity is protective against diabetes across ALL demographic groups
-        - Functional limitations substantially increase diabetes risk
+        - Diabetes rates rise steadily with age, with the sharpest jump seen from middle to older adults (45+).
+        - Individuals with pre-existing conditions experience a much higher prevalence across all ages — from 16% (18–29) to 65% (60–74).
+        - Males (59.8%) show slightly higher rates than females (57.7%), but the presence of chronic conditions outweighs gender differences.
         """)
 
     with tab3:
@@ -390,10 +442,9 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         st.markdown("---")
         st.subheader("Key Insights")
         st.write("""
-        - Self-rated health is a powerful indicator of diabetes prevalence
-        - Both mental and physical unhealthy days correlate with diabetes
-        - Physical activity is protective against diabetes across ALL demographic groups
-        - Functional limitations substantially increase diabetes risk
+        - Diabetes rates rise progressively with BMI, from 26% (underweight) to 76% (Class 3 obesity).
+        - The sharpest increase begins at BMI ≥30 (obesity threshold).
+        - Indicates a strong linear relationship between excess weight and diabetes risk.
         """)
 
     with tab4:
@@ -404,21 +455,11 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         st.markdown("---")
         st.subheader("Key Insights")
         st.write("""
-        - Self-rated health is a powerful indicator of diabetes prevalence
-        - Both mental and physical unhealthy days correlate with diabetes
-        - Physical activity is protective against diabetes across ALL demographic groups
-        - Functional limitations substantially increase diabetes risk
+        - Older people have a higher chance of diabetes than younger ones.
+        - People with other health problems (like high blood pressure or heart disease) are much more likely to have diabetes at every age.
+        - Men (59.8%) have slightly higher rates than women (57.7%), but the difference is small.
+        - Getting older and having more health problems both make diabetes much more likely.
         """)
-
-    st.markdown("---")
-    st.subheader("Key Insights")
-    st.write("""
-    - Pre-existing conditions are strongly associated with higher diabetes risk
-    - BMI is one of the strongest individual predictors of diabetes
-    - Risk increases exponentially with each additional condition
-    - Cardiovascular risk factors and diabetes are closely intertwined
-    - Early screening and management of these conditions is crucial for diabetes prevention
-    """)
 
 # ============================================================================
 # CONCLUSION
