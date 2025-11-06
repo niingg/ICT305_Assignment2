@@ -25,7 +25,7 @@ from hypothesis_h5 import (
 )
 
 # Load dataset
-df = pd.read_csv('diabetes_binary_5050split_health_indicators_BRFSS2015.csv')
+df = pd.read_csv('diabetes.csv')
 df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_')
 
 # ============================================================================
@@ -257,27 +257,39 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         st.write("Use the dropdown to switch between Income Levels:")
         fig1 = create_healthcare_coverage_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Diabetes rates are consistently higher among those without healthcare coverage or with cost barriers.
+        - Low-income groups (<$25k) show the largest gap between “Yes” and “No” responses.
+        - High income groups (> $75k) show much lower diabetes rates and fewer barriers.
+        """)
 
     with tab2:
         st.write("**Income Level Impact on Healthcare Access and Diabetes**")
         st.write("Left chart: Diabetes rate by income | Right chart: Healthcare coverage gaps by income")
         fig2 = create_income_trends_dual_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Diabetes rates decline steadily with higher income levels.
+        - The lowest-income groups (<$15k) have diabetes rates nearly double that of the highest-income group.
+        - Lack of healthcare coverage also drops drasticly with income, showing parallel trends.
+        """)
 
     with tab3:
         st.write("**Cumulative Effect of Healthcare Access Barriers**")
         st.write("Shows diabetes rates based on number of access barriers (0, 1, or 2):")
         fig3 = create_access_barriers_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
-
-    st.markdown("---")
-    st.subheader("Key Insights")
-    st.write("""
-    - Healthcare access barriers significantly impact diabetes management and prevalence
-    - Lower income is strongly associated with higher diabetes rates AND worse healthcare access
-    - Multiple healthcare barriers compound the effect on diabetes risk
-    - Cardiovascular conditions are important indicators of diabetes risk
-    """)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - 0 barriers has the lowest diabetes rate and 2 barriers has the highest diabetes rate.
+        - The jump from 0 to 2 barriers shows a clear compounding effect.
+        - Demonstrates that multiple healthcare challenges increase risk, not just add to it.
+        """)
 
 # ============================================================================
 # H4: SELF-RATED HEALTH
@@ -362,24 +374,55 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         st.write("Use the dropdown to sort by Prevalence (diabetes rate) or Relative Risk (yes/no ratio):")
         fig1 = create_preexisting_conditions_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - All four conditions show much higher diabetes rates for those affected vs those without.
+        - Heart disease (75%) and stroke (74%) have the highest diabetes prevalence, showing strong comorbidity.
+        - High blood pressure (67%) and high cholesterol (64%) are also major contributors, due to shared metabolic risk.
+        """)
 
     with tab2:
         st.write("**Pre-Existing Conditions by Demographics**")
         st.write("Use the dropdown to switch between Age Group and Sex views:")
         fig2 = create_preexisting_conditions_demographics_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Self-rated health is a powerful indicator of diabetes prevalence
+        - Both mental and physical unhealthy days correlate with diabetes
+        - Physical activity is protective against diabetes across ALL demographic groups
+        - Functional limitations substantially increase diabetes risk
+        """)
 
     with tab3:
         st.write("**Diabetes Rate by BMI Category**")
         st.write("Shows progression across 6 BMI classification levels with color gradient:")
         fig3 = create_bmi_categories_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Self-rated health is a powerful indicator of diabetes prevalence
+        - Both mental and physical unhealthy days correlate with diabetes
+        - Physical activity is protective against diabetes across ALL demographic groups
+        - Functional limitations substantially increase diabetes risk
+        """)
 
     with tab4:
         st.write("**Effect of Multiple Pre-existing Conditions**")
         st.write("Shows how diabetes risk increases with each additional condition:")
         fig4 = create_condition_count_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
+        st.markdown("---")
+        st.subheader("Key Insights")
+        st.write("""
+        - Self-rated health is a powerful indicator of diabetes prevalence
+        - Both mental and physical unhealthy days correlate with diabetes
+        - Physical activity is protective against diabetes across ALL demographic groups
+        - Functional limitations substantially increase diabetes risk
+        """)
 
 # ============================================================================
 # CONCLUSION
