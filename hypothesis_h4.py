@@ -436,6 +436,7 @@ def create_physical_activity_demographics_chart(df):
 def create_functional_limitations_chart(df):
     """
     Create a bar chart showing diabetes rates by number of functional limitations.
+    Counts: diffwalk, diffbathing (if available), diffcognition (if available), etc.
     
     Parameters:
     -----------
@@ -445,47 +446,71 @@ def create_functional_limitations_chart(df):
     Returns:
     --------
     plotly.graph_objects.Figure
-        Bar chart of diabetes rates by limitation count
+        Bar chart of diabetes rates by limitation count (0-5)
     """
     df = df.copy()
     df.columns = df.columns.str.lower()
     
-    # Count functional limitations: diffwalk is one
-    df['limitation_count'] = df['diffwalk'].astype(int)
+    # Count functional limitations: diffwalk is the primary one, but check for others
+    # diffwalk = difficulty walking
+    limitation_cols = [col for col in df.columns if 'diff' in col.lower()]
+    
+    if 'diffwalk' in limitation_cols:
+        # If only diffwalk available, use it
+        df['limitation_count'] = df['diffwalk'].astype(int)
+    else:
+        # Otherwise sum all limitation columns
+        df['limitation_count'] = df[limitation_cols].sum(axis=1) if limitation_cols else 0
     
     limit_data = df.groupby('limitation_count')['diabetes_binary'].mean() * 100
     limit_counts = df.groupby('limitation_count').size()
     
+    limit_labels = {
+        0: 'No Limitations',
+        1: '1 Limitation',
+        2: '2 Limitations',
+        3: '3 Limitations',
+        4: '4 Limitations',
+        5: '5 Limitations'
+    }
+    
     limit_df = pd.DataFrame({
-        'Limitations': limit_data.index.map({
-            0: 'No Limitations', 1: '1+ Limitations'
-        }),
+        'Limitations': [limit_labels.get(i, f'{i} Limitations') for i in limit_data.index],
         'Diabetes Rate (%)': limit_data.values,
         'Count': limit_counts.values
     })
     
     fig = go.Figure()
     
-    colors = ['#E8C6AE', '#931A23']
+    # Use color gradient: lighter for no limitations, darker for more
+    colors_map = {
+        0: '#E8C6AE',
+        1: '#D9A580',
+        2: '#CA8456',
+        3: '#A64A47',
+        4: '#931A23',
+        5: '#5C0F14'
+    }
     
     for i, (idx, row) in enumerate(limit_df.iterrows()):
+        color = colors_map.get(idx, '#931A23')
         fig.add_trace(go.Bar(
             x=[row['Limitations']],
             y=[row['Diabetes Rate (%)']],
             name=row['Limitations'],
-            marker=dict(color=colors[i]),
+            marker=dict(color=color),
             text=[f"{row['Diabetes Rate (%)']:.1f}%"],
             textposition='outside',
             customdata=[[row['Count']]],
             hovertemplate='%{x}<br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0][0]:,}<extra></extra>',
+            showlegend=False,
         ))
     
     fig.update_layout(
         title="Diabetes Rate by Functional Limitations",
-        xaxis_title="Functional Limitations Status",
+        xaxis_title="Number of Functional Limitations",
         yaxis_title="Diabetes Rate (%)",
         height=500,
-        showlegend=False,
         plot_bgcolor='white',
         paper_bgcolor='white',
     )
