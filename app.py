@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
-# Import hypothesis modules with functions
+# Import hypothesis modules with CORRECT functions
 from hypothesis_h1 import (
     create_risk_factors_chart,
     create_individual_lifestyle_factors_chart,
@@ -37,39 +37,46 @@ from hypothesis_h5 import (
     create_condition_count_chart,
 )
 
+from conclusion import create_sankey_diagram
+from introduction import display_body_diagram
+
 # Load dataset
 df = pd.read_csv('diabetes.csv')
-df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_') #standardising column names
+df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_')
 
-# ==============
+# ============================================================================
+# HELPER FUNCTIONS FOR H1
+# ============================================================================
+
+# ============================================================================
 # PAGE SETUP
-# ==============
+# ============================================================================
 
 st.set_page_config(page_title="Diabetes Risk Factors Dashboard", layout="wide")
 
-# sidebar nagivation - radio button style
+# --- Sidebar Navigation ---
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to:", [
     "Introduction",
     "**H1**: Lifestyle Habits and Diabetes",
-    "**H2**: Education and Diabetes",
+    "**H2**: Education and Diabetes Prevention",
     "**H3**: Healthcare Access and Diabetes",
     "**H4**: Self-Rated Health and Diabetes",
     "**H5**: Pre-existing Health Conditions and Diabetes",
     "Conclusion"
 ])
 
-# -header
+# --- Header ---
 st.markdown("<h1 style='text-align: center;'>Diabetes Risk Factors Dashboard</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
-# ==============
+# ============================================================================
 # PAGE CONTENT
-# ==============
+# ============================================================================
 
 if page == "Introduction":
     st.subheader("Introduction")
-    st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
+    st.write("Welcome to the Diabetes Risk Factors Dashboard. Here you can explore various factors associated with diabetes risk.")
 
     st.subheader("Case Introduction")
     st.write("""
@@ -87,17 +94,19 @@ if page == "Introduction":
     The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
     which contains health-related behavioral data collected by the CDC.
     It includes various features such as BMI, blood pressure indicators, healthcare access, lifestyle habits, and health metrics.
-             
-    In total, the dataset has 22 variables. A glimpse of the data table is shown below:
+
+    The dataset will be used to explore five hypotheses regarding potential diabetes risk factors.
     """)
 
     # Display a sample of the dataset
+    st.write("Here's a glimpse of the data:")
     st.dataframe(df.head())
 
-    st.write("")
-    st.write("""
-    Based on these 22 variables, we decided to group them into a few different domains, as seen in the table below:
-    """)
+    # Display some basic stats
+    st.write("**Basic Dataset Information:**")
+    st.write(f"- Number of records: {df.shape[0]:,}")
+    st.write(f"- Number of features: {df.shape[1]}")
+    st.write(f"- Diabetes prevalence: {df['diabetes_binary'].mean():.1%}")
 
     variables_info = pd.DataFrame(
         {
@@ -121,18 +130,24 @@ if page == "Introduction":
     st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
     
     st.markdown("---")
-    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
+    
+    # BODY DIAGRAM - NEW SECTION
+    display_body_diagram()
+    
+    st.markdown("---")
+    st.info("Use the sidebar to explore each hypothesis and see how these factors relate to diabetes risk.")
 
-# =====================
+# ============================================================================
 # H1: LIFESTYLE HABITS
-# =====================
+# ============================================================================
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
     st.subheader("Hypothesis 1: Lifestyle Habits and Diabetes")
-    st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
-    st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
-    st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
-    st.write("Lastly, the **third tab** shows..... [CLARIFY WITH GIZ AND NAT FOR EXPLANATION]")
+    st.write("""
+    **Hypothesis**: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, 
+    and heavy alcohol consumption – are associated with a higher risk of diabetes.
+    """)
+    st.write("The visualizations below show how lifestyle habits relate to diabetes risk.")
     
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -142,6 +157,8 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
     ])
     
     with tab1:
+        st.write("**Individual Lifestyle Factors**")
+        st.write("Compares diabetes rates between people with and without each risk factor, including 95% confidence intervals:")
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
         st.markdown("---")
@@ -186,9 +203,9 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         - Higher education and regular activity together lead to the lowest diabetes levels (as low as 36%).
         """)
 
-# ===============
+# ============================================================================
 # H2: EDUCATION
-# ===============
+# ============================================================================
 
 elif page == "**H2**: Education and Diabetes":
     st.subheader("Hypothesis 2: Education and Diabetes")
@@ -476,59 +493,155 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
 # ============================================================================
 
 elif page == "Conclusion":
-    st.subheader("Conclusion")
+    st.markdown("<h2 style='text-align: center;'>Conclusion</h2>", unsafe_allow_html=True)
+    
+    # Introduction
     st.write("""
-    ## Summary of Findings
-
-    This analysis explored five hypotheses about diabetes risk factors using the BRFSS 2015 Health Indicators dataset. 
-    Here are the key findings:
-
-    ### **H1: Lifestyle Habits**
+    This analysis explored five hypotheses about diabetes risk factors using the **BRFSS 2015 Health Indicators dataset**. 
+    This page summarizes the key findings from each hypothesis.
+    """)
+    st.markdown("---")
+    
+    # SECTION 1: Summary of Findings
+    st.subheader("📊 Summary of Findings")
+    
+    col1, col2, col3, col4, col5 = st.columns(5)
+    
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #FFE5E5; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>H1: Lifestyle</strong><br>
+            <span style='color: #9B1128; font-size: 20px;'>❌ Rejected</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #E8F5E9; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>H2: Education</strong><br>
+            <span style='color: #738a6e; font-size: 20px;'>✅ Accepted</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div style='background-color: #FFE5E5; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>H3: Healthcare</strong><br>
+            <span style='color: #9B1128; font-size: 20px;'>❌ Rejected</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown(f"""
+        <div style='background-color: #E8F5E9; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>H4: Self-Health</strong><br>
+            <span style='color: #738a6e; font-size: 20px;'>✅ Accepted</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col5:
+        st.markdown(f"""
+        <div style='background-color: #E8F5E9; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>H5: Conditions</strong><br>
+            <span style='color: #738a6e; font-size: 20px;'>✅ Accepted</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    # SECTION 2: Detailed Findings
+    st.subheader("Detailed Findings by Hypothesis")
+    
+    st.write("""
+    #### **H1: Lifestyle Habits**
     Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
     These are the most controllable risk factors and represent the strongest opportunities for intervention.
-
-    ### **H2: Education**
+    
+    ---
+    
+    #### **H2: Education**
     [To be completed by your group - exploring how educational attainment affects diabetes risk]
-
-    ### **H3: Healthcare Access**
+    
+    ---
+    
+    #### **H3: Healthcare Access**
     Healthcare access barriers create a powerful barrier to diabetes management and prevention.
     - **Income effect**: Lower income → less healthcare access → higher diabetes (clear trend)
     - **Access barriers**: Multiple barriers compound the risk
     - **Cardiovascular indicators**: Strongly predict diabetes risk
     - **Implication**: Addressing healthcare disparities is critical
-
-    ### **H4: Self-Rated Health**
+    
+    ---
+    
+    #### **H4: Self-Rated Health**
     Subjective health assessments are reliable indicators of diabetes risk.
     - **Health rating**: Excellent to Poor shows clear progression
     - **Unhealthy days**: Both mental and physical health matter
     - **Physical activity**: Protective effect across all demographics
     - **Functional limitations**: Substantially increase risk
     - **Implication**: Holistic health management is essential
-
-    ### **H5: Pre-existing Conditions**
+    
+    ---
+    
+    #### **H5: Pre-existing Conditions**
     Cardiometabolic conditions are strongly linked with diabetes.
     - **BMI**: Shows clear progression from underweight to obese
     - **Cardiovascular disease**: Each condition independently increases risk
     - **Cumulative effect**: Risk increases exponentially with multiple conditions
     - **Implication**: Integrated care for multiple conditions is needed
-
-    ---
-
-    ## Recommendations
-
-    1. **Healthcare Access**: Ensure equitable access to preventive care, especially for low-income populations
-    2. **Lifestyle Interventions**: Promote smoking cessation, physical activity, and healthy eating
-    3. **Early Screening**: Screen for and manage cardiometabolic risk factors early
-    4. **Community Programs**: Implement comprehensive diabetes prevention programs targeting high-risk populations
-    5. **Health Education**: Increase health literacy to support informed decision-making
-
-    ---
-
-    ## Data Notes
-
+    """)
+    
+    st.markdown("---")
+    
+    # SECTION 3: Sankey Diagram (NEW!)
+    st.subheader("Data Flow & Hypothesis Conclusions")
+    st.write("This Sankey diagram visualizes how data variables flow through each hypothesis to their conclusions (Accept/Reject):")
+    
+    # Display the Sankey diagram
+    sankey_fig = create_sankey_diagram()
+    st.plotly_chart(sankey_fig, use_container_width=True)
+    
+    st.info("""
+    **How to read the diagram:**
+    - **Left side (Data Variables)**: The 18 measured health indicators from the dataset
+    - **Middle (Hypotheses)**: The 5 research questions being tested
+    - **Right side (Conclusions)**: Whether each hypothesis was Accepted or Rejected
+    - **Flow width**: Represents the magnitude of data relationships
+    - **Colors**: Different colors represent different data pathways
+    """)
+    
+    st.markdown("---")
+    
+    # SECTION 4: Recommendations
+    st.subheader("Key Recommendations")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write("""
+        **For Individuals:**
+        1. Focus on modifiable behaviors (smoking, physical activity, diet)
+        2. Maintain awareness of pre-existing health conditions
+        3. Regular health check-ups and screening
+        4. Improve health literacy through education
+        """)
+    
+    with col2:
+        st.write("""
+        **For Healthcare Providers & Policy:**
+        1. Ensure equitable access to preventive care
+        2. Promote lifestyle intervention programs
+        3. Screen for and manage cardiometabolic risk factors early
+        4. Target high-risk populations with community programs
+        """)
+    
+    st.markdown("---")
+    
+    # SECTION 5: Data Notes
+    st.subheader("Data Notes")
+    st.write(f"""
     - **Dataset**: BRFSS 2015 Health Indicators, 50-50 split (diabetes/non-diabetes)
-    - **Sample Size**: ~250,000 individuals
-    - **Variables**: 22 health and demographic indicators
+    - **Sample Size**: {df.shape[0]:,} individuals
+    - **Variables**: {df.shape[1]} health and demographic indicators
     - **Diabetes Prevalence**: 50% (balanced sample)
-
     """)
