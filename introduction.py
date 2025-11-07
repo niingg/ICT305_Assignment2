@@ -210,7 +210,7 @@ def create_body_diagram():
         # Hover for Brain
         {
             'name': 'Brain', 
-            'x': 2.242, 
+            'x': 2.237, 
             'y': 19, 
             'info': 'Controls the nervous system',
             'affected_by': 'Stroke, High BP, Mental Health, High Cholesterol, and Heavy Alcohol Consumptions', 
