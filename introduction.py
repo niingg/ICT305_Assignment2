@@ -378,8 +378,9 @@ def create_body_diagram():
         dragmode=False,
         plot_bgcolor='white',
         margin=dict(l=50, r=0, t=0, b=0), 
-        width=800,
-        height=800,
+        autosize=True,
+        width=None,
+        height=None,
         xaxis=dict(range=[1, 4]),   # X-axis range (min, max)
         yaxis=dict(range=[0, 20]),  # Y-axis range (min, max)
         hovermode='closest',
@@ -422,7 +423,7 @@ def display_body_diagram():
     """)
     
     fig = create_body_diagram()
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , use_container_height=True)
     
     st.info("""
     💡 **Did you know?**
