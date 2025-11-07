@@ -245,13 +245,14 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
     
     import plotly.express as px
     
+    # ============ SHORTENED EDUCATION LABELS ============
     EDU_MAP = {
-        1: "K-only / None",
-        2: "Grades 1–8",
-        3: "Grades 9–11",
-        4: "HS Grad / GED",
-        5: "Some College / AA",
-        6: "College 4+",
+        1: "No Formal",
+        2: "Elementary",
+        3: "Some HS",
+        4: "HS Grad",
+        5: "Some College",
+        6: "College+",
     }
     EDU_ORDER = [EDU_MAP[k] for k in (1,2,3,4,5,6)]
     AGE_ORDER = ["18–29","30–44","45–59","60–74","75+"]
@@ -316,14 +317,17 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
         tbl = make_table(df, "education_lbl")
         facet_var = "education_lbl"
         title_note = "Education"
+        num_facets = len(EDU_ORDER)
     elif facet_type == "age":
         tbl = make_table(df, "agegroup")
         facet_var = "agegroup"
         title_note = "Age Group"
+        num_facets = len(AGE_ORDER)
     else:  # sex
         tbl = make_table(df, "sex_lbl")
         facet_var = "sex_lbl"
         title_note = "Sex"
+        num_facets = 2
     
     # Create faceted plot
     fig = px.bar(
@@ -334,14 +338,41 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
         text=tbl["prev"].map(lambda v: f"{v:.0%}"),
         title=f"Physical Activity vs Diabetes by {title_note}<br><sup>% with diabetes — faceted</sup>"
     )
+    
     fig.update_traces(
         marker_line_width=1, marker_line_color=GRID,
         textposition="outside",
         hovertemplate="%{x}<br>%{y:.1%}<extra></extra>",
         showlegend=False,
     )
-    fig.for_each_yaxis(lambda a: a.update(title="% Diabetes", tickformat=".0%", dtick=0.10, range=[0,1], gridcolor=GRID))
-    fig.for_each_xaxis(lambda a: a.update(title="Physically Active"))
+    
+    # ============ FIX Y-AXIS LABELS (only on left) ============
+    fig.for_each_yaxis(lambda a: a.update(
+        title="", 
+        tickformat=".0%", 
+        dtick=0.10, 
+        range=[0,1], 
+        gridcolor=GRID
+    ))
+    fig.update_yaxes(title_text="% Diabetes", col=1)
+    
+    # Remove x-axis labels from all axes
+    fig.for_each_xaxis(lambda a: a.update(title=""))
+
+    # Add centered label below the chart
+    fig.add_annotation(
+        text="Physically Active",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.12,
+        showarrow=False,
+        font=dict(size=16, color="#666"),
+    )
+    
+    # ============ FIX FACET TITLES (remove "education_lbl=" prefix) ============
+    fig.for_each_annotation(lambda a: a.update(
+        text=a.text.split("=")[-1] if "=" in a.text else a.text
+    ))
+    
     fig.update_layout(
         template="simple_white", 
         bargap=0.35, 
