@@ -132,9 +132,16 @@ styled_header()
 
 if page == "Introduction":
     styled_heading("Introduction", level=1, align="center")
-    st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
+    st.markdown("""
+    <div style='text-align: center; font-size: 18px;'>
+        Welcome to the <b>Diabetes Risk Factors Dashboard!</b>
+        Here you can explore various factors associated with diabetes risk.
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")  
 
-    styled_heading("Case Introduction", level=2)
+
+    styled_heading("The Case", level=2)
     st.write("""
     Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage.
              
@@ -175,9 +182,12 @@ if page == "Introduction":
     After progressing through the hypotheses, main takeaways from the dashboard can are provided through a summary of the information and recommendations.
     """)
 
-    styled_heading("Target Audience", level=2)
+    st.markdown("---")
 
+    styled_heading("Target Audience", level=2, align="center" )
     col1, col2 = st.columns(2)
+    st.markdown("---")
+
     
     with col1:
         st.markdown(f"""
@@ -187,6 +197,7 @@ if page == "Introduction":
             </span>
         </div>
         """, unsafe_allow_html=True)
+        
     
     with col2:
         st.markdown(f"""
@@ -195,7 +206,7 @@ if page == "Introduction":
             <span style='color: #194875; font-size: 20px;'>Provide insights for the design of public health programmes</span>
         </div>
         """, unsafe_allow_html=True)
-
+    
     styled_heading("Dataset Overview", level=2)
     st.write("""
     The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
@@ -206,38 +217,160 @@ if page == "Introduction":
     """)
 
     # Display a sample of the dataset
-    st.dataframe(df.head())
+    sample = df.head()
+
+    styled = (
+        sample.style
+            .format("{:g}") 
+            .set_table_styles([
+                # data column headers
+                {"selector": "th.col_heading",
+                "props": [("background-color", "#b22222"),
+                        ("color", "white"), ("font-weight", "700")]},
+                # top-left corner / blank header cell
+                {"selector": "th.blank, th.index_name",
+                "props": [("background-color", "#b22222"),
+                        ("color", "white"), ("font-weight", "700")]}
+            ])
+    )
+
+    st.table(styled)
+    
+
 
     st.write("")
     st.write("""
     Based on these 22 variables, we decided to group them into a few different domains, as seen in the table below:
     """)
 
-    variables_info = pd.DataFrame(
-        {
-            "Domain": ["Lifestyle Habits", "Demographics", "Healthcare Access", "Self-Rated Health", "Pre-existing Conditions"],
-            "Variables": [
-                "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption", "Age, Sex, Education, Income, BMI",
-                "Healthcare Coverage, Cost Barriers, Regular Checkups", "General Health Rating, Mental Health, Physical Health, Difficulty Walking",
-                "Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol"]
-        })
-    st.table(variables_info)
 
-    # Additional explanation
-    st.write("")
-    st.write("Based on the above groupings, we came up with our five hypotheses:")
-    st.write("1. Lifestyle Habits and Diabetes")
-    st.write("2. Education and Diabetes")
-    st.write("3. Healthcare Access and Diabetes")
-    st.write("4. Self-Rated Health and Diabetes")
-    st.write("5. Pre-existing Health Conditions and Diabetes")
-    st.write("")
-    st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
+    variables_info = pd.DataFrame({
+        "Domain": [
+            "Lifestyle Habits", "Demographics", "Healthcare Access",
+            "Self-Rated Health", "Pre-existing Conditions"
+        ],
+        "Variables": [
+            "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption",
+            "Age, Sex, Education, Income, BMI",
+            "Healthcare Coverage, Cost Barriers, Regular Checkups",
+            "General Health Rating, Mental Health, Physical Health, Difficulty Walking",
+            "Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol"
+        ]
+    })
+
+    styled = (
+        variables_info.style
+            .hide(axis="index")
+            .set_table_styles([
+                # Header row: deep red background + white text
+                {"selector": "th.col_heading", "props": [("background-color", "#b22222"), ("color", "white"), ("font-weight", "700")]},
+                {"selector": "thead th",        "props": [("background-color", "#b22222"), ("color", "white"), ("font-weight", "700")]},
+                # Optional: nicer cell spacing
+                {"selector": "td",              "props": [("padding", "8px 10px"), ("vertical-align", "top")]},
+                {"selector": "th",              "props": [("padding", "10px")]}
+            ])
+    )
+
+    st.table(styled)
+
+
+    # --- Additional Explanation ---
+    st.markdown("""
+    <style>
+    /* Serif across this block */
+    .explain-wrap, .explain-wrap * 
+
+    /* Container */
+    .explain-wrap{
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.05);
+    margin-top: 6px;
+    }
+
+    /* Heading */
+    .explain-title{
+    font-weight: 800; margin: 0 0 6px 0; font-size: 20px;
+    color: %(primary)s;
+    }
+
+    /* Intro text */
+    .explain-lead{
+    margin: 6px 0 12px 0; color:#222; line-height:1.55;
+    }
+
+    /* Numbered list */
+    .explain-list{
+    counter-reset: num; list-style: none; padding-left: 0; margin: 8px 0 10px 0;
+    }
+    .explain-list li{
+    counter-increment: num; position: relative;
+    margin: 8px 0; padding-left: 40px; line-height: 1.5; color:#111;
+    }
+    .explain-list li::before{
+    content: counter(num) ".";
+    position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; line-height: 28px; text-align: center;
+    border-radius: 999px;
+    background: %(chip_bg)s; color: %(primary)s; font-weight: 700;
+    border: 1px solid #e6e9ef;
+    }
+
+    /* Closing line */
+    .explain-note{
+    margin-top: 10px; color:#333;
+    }
+
+    /* Dataset card */
+    .dataset-card{
+    margin-top: 14px;
+    padding: 14px 16px;
+    border: 1px solid #f0e3e3;
+    border-radius: 12px;
+    background: #fff7f7;
+    }
+    .dataset-card b{ color: %(primary)s; }
+    .dataset-link a{ text-decoration: none; border-bottom: 1px dotted %(primary)s; }
+    .dataset-link a:hover{ border-bottom-style: solid; }
+    </style>
+
+    <div class="explain-wrap">
+    <div class="explain-title">Additional explanation</div>
+    <div class="explain-lead">
+        Based on the above groupings, we arrived at five hypotheses that structure the dashboard:
+    </div>
+
+    <ol class="explain-list">
+        <li><b>Lifestyle Habits and Diabetes</b></li>
+        <li><b>Education and Diabetes</b></li>
+        <li><b>Healthcare Access and Diabetes</b></li>
+        <li><b>Self-Rated Health and Diabetes</b></li>
+        <li><b>Pre-existing Health Conditions and Diabetes</b></li>
+    </ol>
+
+    <div class="explain-note">
+        Our dashboard is organised by these five hypotheses — use the side navigation to jump into each section and explore the evidence.
+    </div>
+
+    <div class="dataset-card">
+        <div><b>Dataset</b></div>
+        <div class="dataset-link">
+        For more information about the dataset, see the UCI page:
+        <a href="https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators" target="_blank" rel="noopener noreferrer">
+            CDC Diabetes Health Indicators
+        </a>.
+        </div>
+    </div>
+    </div>
+    """ % {
+        "primary": COLORS.get("primary", "#8a0d12"),
+        "chip_bg": COLORS.get("chip_bg", "#f5f7fa"),
+    }, unsafe_allow_html=True)
+
     st.markdown("---")
-    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
 
-
-    st.markdown("---")
     
     # BODY DIAGRAM - NEW SECTION
     styled_heading("🫀 How Diabetes Affects Your Body")
