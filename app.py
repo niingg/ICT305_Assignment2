@@ -663,7 +663,7 @@ elif page == "**H5**: Pre-Existing Health Conditions and Diabetes":
         # SELECTBOX FOR SORT METHOD
         sort_method = st.selectbox(
             "Sort by:",
-            ["Prevalence (diabetes rate)", "Relative Risk"],
+            ["Prevalence", "Relative Risk"],
             key="h5_sort"
         )
         

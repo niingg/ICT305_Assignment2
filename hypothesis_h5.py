@@ -15,18 +15,6 @@ GRID = "rgba(0, 0, 0, 0.08)"
 def create_preexisting_conditions_chart(df, sort_by="Prevalence"):
     """
     Create an interactive chart showing diabetes rates and relative risk for individual pre-existing conditions.
-    
-    Parameters:
-    -----------
-    df : pandas.DataFrame
-        The diabetes dataset
-    sort_by : str
-        One of: "Prevalence" or "Relative Risk"
-    
-    Returns:
-    --------
-    plotly.graph_objects.Figure
-        Figure sorted by selected metric
     """
     df = df.copy()
     df.columns = df.columns.str.lower()
@@ -42,11 +30,8 @@ def create_preexisting_conditions_chart(df, sort_by="Prevalence"):
     prevalence_data = []
     
     for condition_name, condition_col in conditions.items():
-        # Calculate diabetes rate for Yes and No
         no_rate = df[df[condition_col] == 0]['diabetes_binary'].mean() * 100
         yes_rate = df[df[condition_col] == 1]['diabetes_binary'].mean() * 100
-        
-        # Calculate relative risk (ratio of yes rate to no rate)
         relative_risk = yes_rate / no_rate if no_rate > 0 else 1.0
         
         prevalence_data.append({
@@ -63,37 +48,31 @@ def create_preexisting_conditions_chart(df, sort_by="Prevalence"):
     
     sorted_df = pd.DataFrame(sorted_data)
     
-    # Create figure
+    # Create figure with 2 traces total
     fig = go.Figure()
     
-    # Add traces for each condition
-    for i, row in sorted_df.iterrows():
-        # No group (light tan)
-        fig.add_trace(go.Bar(
-            x=[row['Condition']],
-            y=[row['No Rate']],
-            name='No' if i == 0 else None,
-            marker=dict(color='#E8C6AE'),
-            text=[f"{row['No Rate']:.1f}"],
-            textposition='outside',
-            legendgroup='No',
-            showlegend=(i == 0),
-            hovertemplate='<b>%{x}</b><br>No Condition: %{y:.1f}%<extra></extra>',
-        ))
-        
-        # Yes group (dark red) - FIXED: Pass relative risk as customdata
-        fig.add_trace(go.Bar(
-            x=[row['Condition']],
-            y=[row['Yes Rate']],
-            name='Yes' if i == 0 else None,
-            marker=dict(color='#931A23'),
-            text=[f"{row['Yes Rate']:.1f}"],
-            textposition='outside',
-            legendgroup='Yes',
-            showlegend=(i == 0),
-            customdata=[[row['Relative Risk']]],
-            hovertemplate='<b>%{x}</b><br>Has Condition: %{y:.1f}%<br>Relative Risk: %{customdata[0][0]:.2f}x<extra></extra>',
-        ))
+    # Add "No" trace (all conditions)
+    fig.add_trace(go.Bar(
+        x=sorted_df['Condition'],
+        y=sorted_df['No Rate'],
+        name='No',
+        marker=dict(color='#E8C6AE'),
+        text=[f"{val:.1f}%" for val in sorted_df['No Rate']],
+        textposition='outside',
+        hovertemplate='<b>%{x}</b><br>No Condition: %{y:.1f}%<extra></extra>',
+    ))
+    
+    # Add "Yes" trace (all conditions)
+    fig.add_trace(go.Bar(
+        x=sorted_df['Condition'],
+        y=sorted_df['Yes Rate'],
+        name='Yes',
+        marker=dict(color='#931A23'),
+        text=[f"{val:.1f}%" for val in sorted_df['Yes Rate']],
+        textposition='outside',
+        customdata=sorted_df['Relative Risk'],
+        hovertemplate='<b>%{x}</b><br>Has Condition: %{y:.1f}%<br>Relative Risk: %{customdata:.2f}x<extra></extra>',
+    ))
     
     fig.update_layout(
         title_text=f"Effect of Pre-Existing Factors on Diabetes Rates (Sorted by {sort_by})",
@@ -504,22 +483,28 @@ def create_condition_count_chart(df):
     }
     
     cond_df = pd.DataFrame({
-        'Conditions': [condition_labels.get(i, f'{i} Conditions') for i in cond_data.index],
-        'Diabetes Rate (%)': cond_data.values,
-        'Count': cond_counts.values
+        'Conditions': [condition_labels.get(i, f'{i} Conditions') for i in range(6)],
+        'Diabetes Rate (%)': [cond_data.get(i, 0) for i in range(6)],
+        'Count': [cond_counts.get(i, 0) for i in range(6)]
     })
     
     fig = go.Figure()
     
-    fig.add_trace(go.Bar(
-        x=cond_df['Conditions'],
-        y=cond_df['Diabetes Rate (%)'],
-        marker=dict(color='#931A23'),
-        text=[f"{val:.1f}%" for val in cond_df['Diabetes Rate (%)']],
-        textposition='outside',
-        customdata=cond_df[['Count']],
-        hovertemplate='%{x}<br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0]:,}<extra></extra>',
-    ))
+    # Color gradient from yellow to dark red
+    colors = ["#FFF1A4", '#EEC8A3', '#DD9C7C', '#D24C49', '#A64A47', '#931A23']
+    
+    for i, (idx, row) in enumerate(cond_df.iterrows()):
+        fig.add_trace(go.Bar(
+            x=[row['Conditions']],
+            y=[row['Diabetes Rate (%)']],
+            name=row['Conditions'],
+            marker=dict(color=colors[i]),
+            text=[f"{row['Diabetes Rate (%)']:.1f}%"],
+            textposition='outside',
+            customdata=[[row['Count']]],
+            hovertemplate='<b>%{x}</b><br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0][0]:,}<extra></extra>',
+            showlegend=False,
+        ))
     
     fig.update_layout(
         title="Diabetes Rate by Number of Pre-Existing Conditions",
