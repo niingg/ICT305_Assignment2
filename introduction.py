@@ -87,7 +87,7 @@ def create_body_diagram():
             )
 
     # Arteries 1
-    arteries_path = get_image_path("arteriess.png")
+    arteries_path = get_image_path("arteries.png")
     if arteries_path:
         arteries_b64 = image_to_base64(arteries_path)
         if arteries_b64:

@@ -198,8 +198,8 @@ if page == "Introduction":
 
     styled_heading("Dataset Overview", level=2)
     st.write("""
-    The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
-    which contains health-related behavioral data collected by the CDC.
+    The dataset used in this analysis is derived from the **CDC Diabetes Health Indicators dataset**, 
+    which contains health-related behavioral data collected by the CDC from The United Stated of America.
     It includes various features such as BMI, blood pressure indicators, healthcare access, lifestyle habits, and health metrics.
              
     In total, the dataset has 22 variables. A glimpse of the data table is shown below:
@@ -234,10 +234,6 @@ if page == "Introduction":
     st.write("")
     st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
     st.markdown("---")
-    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
-
-
-    st.markdown("---")
     
     # BODY DIAGRAM - NEW SECTION
     styled_heading("🫀 How Diabetes Affects Your Body")
@@ -249,10 +245,11 @@ if page == "Introduction":
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
     styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=1, align="center")
+    st.write("**Hypothesis**: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, and heavy alcohol consumption – are associated with a higher risk of diabetes.")
     st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
-    st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
+    st.write("The **first tab** explores an overall view of how all the lifestyle factors listed impacts your diabetes risk.")
     st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
-    st.write("Lastly, the **third tab** shows..... [CLARIFY WITH GIZ AND NAT FOR EXPLANATION]")
+    st.write("Lastly, the **third tab** shows the impact of physical activity on the risk of developing diabetes. Use the dropdowns to filter by age group, sex and BMI.")
     
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -262,6 +259,8 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
     ])
     
     with tab1:
+        st.write("**Diabetes Prevalence by Lifestyle Habits**")
+        st.write("Shows the rate of diabetes for each type of lifestyle habit:")
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
         st.markdown("---")
@@ -312,6 +311,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
 
 elif page == "**H2**: Education and Diabetes":
     styled_heading("Hypothesis 2: Education and Diabetes",level=1, align="center")
+    st.write("**Hypothesis**: Higher educational attainment reduces the likelihood of diabetes, both directly through health literacy and indirectly via healthier behaviours and improved healthcare access.")
     st.write("Now that you understand how lifestyle factors affect diabetes, let's dive into demographic influences!")
     st.write("The graph in the **first tab** investigates how education level impacts health behaviors, namely diet, physical activity, and regular checkups.")
     st.write("The **second tab** explores the direct relationship between education level and diabetes prevalence.")
@@ -393,6 +393,9 @@ elif page == "**H3**: Healthcare Access and Diabetes":
     The visualizations below show how healthcare access relates to diabetes rates across different demographic groups 
     and income levels.
     """)
+    st.write("The **first tab** consists of two graphs. The first graph investigates how healthcare coverage affects diabetes rates, while the second graph looks at how the ability to afford seeing a doctor affects diabetes rates.")
+    st.write("The **second tab** compares diabetes rates and healthcare coverage ownership rates across income groups.")
+    st.write("The **third tab** examines how the number of healthcare barriers (lack of coverage and inability to afford seeing a doctor) affects diabetes rates.")
 
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -453,6 +456,10 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
     st.write("""
     The visualizations below show how various health indicators relate to diabetes across different demographic groups.
     """)
+    st.write("The **first tab** compares trends between the rate of diabetes against the number of days of poor physical and mental health.")
+    st.write("In the **second tab**, the first graph compares walking difficulty with diabetes rate, while the second graph contrasts physical activity against diabetes rate.")
+    st.write("The **third tab** investigates the cumulative effect of health limitations on diabetes rates.")
+    
 
     # Create tabs for different visualizations
     tab1, tab2, tab3, tab4 = st.tabs([
@@ -529,6 +536,11 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
     The visualizations below show how pre-existing health conditions relate to diabetes rates. 
     Pre-existing conditions include: Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol, and Elevated BMI (≥30).
     """)
+    st.write("The **first tab** compares the rate of diabetes across individuals who have/don’t have been diagnosed with one of the other four diseases.")
+    st.write("The **second tab** explores how having one or more pre-existing conditions impacts diabetes rates across different age groups.")
+    st.write("The **third tab** investigates the rate of diabetes across various BMI categories (based on the USA’s CDC classification).")
+    st.write("The **fourth tab** assesses how the accumulation of multiple pre-existing conditions influences diabetes prevalence.")
+   
 
     # Create tabs for different visualizations
     tab1, tab2, tab3, tab4 = st.tabs([
@@ -654,7 +666,6 @@ elif page == "Conclusion":
     
     # SECTION 2: Detailed Findings
     styled_heading("Detailed Findings by Hypothesis")
-
 
     # CSS 
     st.markdown("""
@@ -834,8 +845,27 @@ elif page == "Conclusion":
     # SECTION 5: Data Notes
     styled_heading("Data Notes")
     st.write(f"""
-    - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes)
+    - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes) 
     - **Sample Size**: {df.shape[0]:,} individuals
     - **Variables**: {df.shape[1]} health and demographic indicators
     - **Diabetes Prevalence**: 50% (balanced sample)
+    """)
+
+    st.markdown("---")
+
+    # SECTION 6: Citation
+    styled_heading("Reference")
+    st.write(f"""
+    - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes) 
+             https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators
+    - **Images**: 
+    - Arteries -> https://commons.wikimedia.org/wiki/File:Arterial_System.png 
+    - Brain -> https://www.dreamstime.com/stock-illustration-brain-front-view-icon-human-hnternal-organs-symbol-vector-illustration-cartoon-style-isolated-white-background-image89183850 
+    - Body -> https://www.hiclipart.com/free-transparent-background-png-clipart-pxirg 
+    - Heart -> https://www.istockphoto.com/vector/anatomical-heart-isolated-heart-diagnostic-center-sign-human-heart-cartoon-design-gm1177145926-328507854 
+    - Left and Right Kidneys -> https://pngtree.com/freepng/human-kidney_16414842.html 
+    - Liver -> https://pngtree.com/freepng/liver-frontal-liver-clip-art_6017745.html 
+    - Lungs -> https://pngtree.com/freepng/vector-illustration-of-lung-anatomy-in-medical-biology-set-against-a-white-background-vector_12922676.html 
+    - Pancreas -> https://pngtree.com/freepng/human-pancreas_16414480.html 
+    - Stomach -> https://pngtree.com/freepng/visceral-stomach_5420103.html 
     """)
