@@ -406,7 +406,7 @@ def create_body_diagram():
                 bgcolor="white",
                 bordercolor="black",
                 borderwidth=2,
-                font=dict(size=12),
+                font=dict(size=12, color = "black"),
             ),
         ] 
     )
