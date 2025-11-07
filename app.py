@@ -87,7 +87,6 @@ from hypothesis_h3 import (
 from hypothesis_h4 import (
     create_health_trends_chart,
     create_functional_limitations_comparison_chart,
-    create_physical_activity_demographics_chart,
     create_functional_limitations_chart,
 )
 
@@ -401,17 +400,16 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         """)
     
     with tab3:
-        st.write("**Physical Activity vs Diabetes by Education, Age Group, and Sex**")
-        st.write("Choose which demographic to view:")
+        st.write("**Physical Activity vs Diabetes by Education, Age Group, and Sex**")       
         
-        facet_choice = st.selectbox(
-            "Select demographic view:",
-            ["Education", "Age Group", "Sex"],
-            key="h1_facet"
+        # SELECTBOX
+        demographic_choice = st.selectbox(
+            "Choose demographic to view:",
+            ["Age Group", "Sex", "BMI Category"],
+            key="h1_demographic"
         )
         
-        facet_map = {"Education": "education", "Age Group": "age", "Sex": "sex"}
-        fig2 = create_physical_activity_by_demographics_chart(df, facet_type=facet_map[facet_choice])
+        fig2 = create_physical_activity_by_demographics_chart(df, demographic=demographic_choice)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
         styled_heading("Key Insights", level=2)
@@ -519,8 +517,22 @@ elif page == "**H3**: Healthcare Access and Diabetes":
     with tab1:
         st.write("**Healthcare Coverage & Cost Barriers by Income Level**")
         st.write("Use the dropdown to view data for different income levels:")
-        fig1 = create_healthcare_coverage_chart(df)
+        
+        # SELECTBOX FOR INCOME LEVEL
+        income_options = [
+            '< $10k', '$10k-$15k', '$15k-$20k', '$20k-$25k',
+            '$25k-$35k', '$35k-$50k', '$50k-$75k', '> $75k'
+        ]
+        selected_income = st.selectbox(
+            "Select income level:",
+            income_options,
+            index=4,  # Default to $25k-$35k
+            key="h3_income"
+        )
+        
+        fig1 = create_healthcare_coverage_chart(df, income_level=selected_income)
         st.plotly_chart(fig1, use_container_width=True)
+
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
@@ -570,10 +582,9 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
     """)
 
     # Create tabs for different visualizations
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         "Health Trends",
         "Functional Limitations",
-        "Physical Activity by Demographics",
         "Limitation Impact"
     ])
 
@@ -605,19 +616,6 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         """)
 
     with tab3:
-        st.write("**Physical Activity Impact Across Demographics**")
-        st.write("Use the dropdown to switch between Age Group, Sex, and BMI Category:")
-        fig3 = create_physical_activity_demographics_chart(df)
-        st.plotly_chart(fig3, use_container_width=True)
-        st.markdown("---")
-        styled_heading("Key Insights")
-        st.write("""
-        - In every facet, active groups have lower diabetes rates.
-        - (60+) and obese groups gain the largest benefit from activity.
-        - Males are slightly higher than females across states, but the activity gap dominates.
-        """)
-
-    with tab4:
         st.write("**Effect of Functional Limitations**")
         st.write("Shows diabetes rates by functional limitation status:")
         fig4 = create_functional_limitations_chart(df)
@@ -656,8 +654,20 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
     with tab1:
         st.write("**Pre-existing Conditions and Diabetes Risk**")
         st.write("Use the dropdown to sort by Prevalence (diabetes rate) or Relative Risk (yes/no ratio):")
-        fig1 = create_preexisting_conditions_chart(df)
+        
+        # SELECTBOX FOR SORT METHOD
+        sort_method = st.selectbox(
+            "Sort by:",
+            ["Prevalence (diabetes rate)", "Relative Risk"],
+            key="h5_sort"
+        )
+        
+        # Map display name to function parameter
+        sort_param = "Relative Risk" if "Relative" in sort_method else "Prevalence"
+        
+        fig1 = create_preexisting_conditions_chart(df, sort_by=sort_param)
         st.plotly_chart(fig1, use_container_width=True)
+        
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
