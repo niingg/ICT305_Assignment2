@@ -79,7 +79,7 @@ def create_sankey_diagram():
         22, # High Cholesterol to Hypothesis 5
         21, # Physical Health to Hypothesis 4
         21, # Difficulty Walking to Hypothesis 4    
-        23, # Hypothesis 1 to Reject (Contribute)
+        23, # Hypothesis 1 to Accept (Contribute)
         23, # Hypothesis 2 to Accept (Contribute)
         24, # Hypothesis 3 to Reject (Does Not Contribute)
         23, # Hypothesis 4 to Accept (Contribute)
