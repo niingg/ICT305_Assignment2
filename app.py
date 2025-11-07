@@ -21,21 +21,23 @@ COLORS = {
     "header_bg": "#FFE5E5",
 }
 
-# function to use to style all headers
-def styled_heading(text, level=2, color=COLORS["primary"]):
-    """
-    Display a heading with custom color and serif font.
-    
-    Args:
-        text (str): Heading text
-        level (int): 1 for h1, 2 for h2, 3 for h3
-        color (str): Hex color for the heading
-    """
+# function to style headings
+def styled_heading(text, level=2, color="#931A23", align="left"):
+    """Display a heading with color, weight, and alignment."""
     tags = {1: "h1", 2: "h2", 3: "h3"}
     tag = tags.get(level, "h2")
     font_sizes = {1: "32px", 2: "24px", 3: "18px"}
     font_size = font_sizes.get(level, "24px")
-    html = f"<{tag} style='color: {color}; font-size: {font_size};'>{text}</{tag}>"
+    
+    html = f"""
+    <{tag} style='
+        color: {color};
+        font-size: {font_size};
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-align: {align};
+    '>{text}</{tag}>
+    """
     st.markdown(html, unsafe_allow_html=True)
 
 # function to add background colour for header
@@ -129,7 +131,7 @@ styled_header()
 # ==============
 
 if page == "Introduction":
-    styled_heading("Introduction")
+    styled_heading("Introduction", level=2)
     st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
 
     styled_heading("Case Introduction", level=2)
