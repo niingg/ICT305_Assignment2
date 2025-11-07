@@ -197,7 +197,7 @@ def create_body_diagram():
         if brain_b64:
             fig.add_layout_image(
                 source=brain_b64,
-                x=0.344, y=1.02, sizex=0.15, sizey=0.15,
+                x=0.34, y=1.02, sizex=0.15, sizey=0.15,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
