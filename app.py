@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
-# Import hypothesis modules with CORRECT functions
+# Import hypothesis modules with functions
 from hypothesis_h1 import (
     create_risk_factors_chart,
     create_individual_lifestyle_factors_chart,
@@ -39,41 +39,37 @@ from hypothesis_h5 import (
 
 # Load dataset
 df = pd.read_csv('diabetes.csv')
-df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_')
+df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_').str.replace('-', '_') #standardising column names
 
-# ============================================================================
-# HELPER FUNCTIONS FOR H1
-# ============================================================================
-
-# ============================================================================
+# ==============
 # PAGE SETUP
-# ============================================================================
+# ==============
 
 st.set_page_config(page_title="Diabetes Risk Factors Dashboard", layout="wide")
 
-# --- Sidebar Navigation ---
+# sidebar nagivation - radio button style
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to:", [
     "Introduction",
     "**H1**: Lifestyle Habits and Diabetes",
-    "**H2**: Education and Diabetes Prevention",
+    "**H2**: Education and Diabetes",
     "**H3**: Healthcare Access and Diabetes",
     "**H4**: Self-Rated Health and Diabetes",
     "**H5**: Pre-existing Health Conditions and Diabetes",
     "Conclusion"
 ])
 
-# --- Header ---
+# -header
 st.markdown("<h1 style='text-align: center;'>Diabetes Risk Factors Dashboard</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
-# ============================================================================
+# ==============
 # PAGE CONTENT
-# ============================================================================
+# ==============
 
 if page == "Introduction":
     st.subheader("Introduction")
-    st.write("Welcome to the Diabetes Risk Factors Dashboard. Here you can explore various factors associated with diabetes risk.")
+    st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
 
     st.subheader("Case Introduction")
     st.write("""
@@ -91,34 +87,52 @@ if page == "Introduction":
     The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
     which contains health-related behavioral data collected by the CDC.
     It includes various features such as BMI, blood pressure indicators, healthcare access, lifestyle habits, and health metrics.
-
-    The dataset will be used to explore five hypotheses regarding potential diabetes risk factors.
+             
+    In total, the dataset has 22 variables. A glimpse of the data table is shown below:
     """)
 
     # Display a sample of the dataset
-    st.write("Here's a glimpse of the data:")
     st.dataframe(df.head())
 
-    # Display some basic stats
-    st.write("**Basic Dataset Information:**")
-    st.write(f"- Number of records: {df.shape[0]:,}")
-    st.write(f"- Number of features: {df.shape[1]}")
-    st.write(f"- Diabetes prevalence: {df['diabetes_binary'].mean():.1%}")
+    st.write("")
+    st.write("""
+    Based on these 22 variables, we decided to group them into a few different domains, as seen in the table below:
+    """)
 
+    variables_info = pd.DataFrame(
+        {
+            "Domain": ["Lifestyle Habits", "Demographics", "Healthcare Access", "Self-Rated Health", "Pre-existing Conditions"],
+            "Variables": [
+                "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption", "Age, Sex, Education, Income, BMI",
+                "Healthcare Coverage, Cost Barriers, Regular Checkups", "General Health Rating, Mental Health, Physical Health, Difficulty Walking",
+                "Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol"]
+        })
+    st.table(variables_info)
+
+    # Additional explanation
+    st.write("")
+    st.write("Based on the above groupings, we came up with our five hypotheses:")
+    st.write("1. Lifestyle Habits and Diabetes")
+    st.write("2. Education and Diabetes")
+    st.write("3. Healthcare Access and Diabetes")
+    st.write("4. Self-Rated Health and Diabetes")
+    st.write("5. Pre-existing Health Conditions and Diabetes")
+    st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
+
+    st.write("")
     st.markdown("---")
-    st.info("Use the sidebar to explore each hypothesis and see how these factors relate to diabetes risk.")
+    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
 
-# ============================================================================
+# =====================
 # H1: LIFESTYLE HABITS
-# ============================================================================
+# =====================
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
     st.subheader("Hypothesis 1: Lifestyle Habits and Diabetes")
-    st.write("""
-    **Hypothesis**: Modifiable behaviours – including smoking, physical inactivity, insufficient fruit and vegetable intake, 
-    and heavy alcohol consumption – are associated with a higher risk of diabetes.
-    """)
-    st.write("The visualizations below show how lifestyle habits relate to diabetes risk.")
+    st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
+    st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
+    st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
+    st.write("Lastly, the **third tab** shows..... [CLARIFY WITH GIZ AND NAT FOR EXPLANATION]")
     
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -128,8 +142,6 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
     ])
     
     with tab1:
-        st.write("**Individual Lifestyle Factors**")
-        st.write("Compares diabetes rates between people with and without each risk factor, including 95% confidence intervals:")
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
         st.markdown("---")
@@ -174,12 +186,12 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         - Higher education and regular activity together lead to the lowest diabetes levels (as low as 36%).
         """)
 
-# ============================================================================
+# ===============
 # H2: EDUCATION
-# ============================================================================
+# ===============
 
-elif page == "**H2**: Education and Diabetes Prevention":
-    st.subheader("Hypothesis 2: Education and Diabetes Prevention")
+elif page == "**H2**: Education and Diabetes":
+    st.subheader("Hypothesis 2: Education and Diabetes")
     st.write("""
     **Hypothesis**: Higher educational attainment reduces the likelihood of diabetes, both directly through health literacy 
     and indirectly via healthier behaviours and improved healthcare access.
