@@ -160,10 +160,11 @@ def create_sankey_diagram():
         # Define the nodes
         node=dict(
             pad=15,                    # Spacing between nodes
-            thickness=50,              # Width of the node bars
+            thickness=50,
             label=nodes,               # Node labels
             color=node_colors,         # Node colors
-            hovertemplate="%{label}<extra></extra>"  # Clean hover text
+            hovertemplate="%{label}<extra></extra>",  # Clean hover text
+            
         ),
         # Define the links (flows)
         link=dict(
@@ -178,20 +179,11 @@ def create_sankey_diagram():
     # Update layout for better appearance
     fig.update_layout(
     font=dict(
-        size=11, 
+        size=14, 
         color="#000000", 
         family="Arial"  
     ),
-    title={
-        'text': "Diabetes Analysis: Data Flow Through Hypotheses to Conclusions",
-        'x': 0.5,
-        'xanchor': 'center',
-        'font': {
-            'size': 20, 
-            'color': "#1F1F1F", 
-            'family': "Arial"
-        }
-    },
+    
     paper_bgcolor="#F8F9FA",  
     plot_bgcolor="#F8F9FA",   
     height=700,               
