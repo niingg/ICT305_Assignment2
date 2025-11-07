@@ -99,6 +99,9 @@ def create_health_trends_chart(df):
         height=500,
         hovermode='x unified',
     )
+
+    # Remove grid lines
+    fig.update_yaxes(showgrid=False)
     
     return fig
 

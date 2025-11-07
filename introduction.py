@@ -81,7 +81,7 @@ def create_body_diagram():
         if base_body_b64:
             fig.add_layout_image(
                 source=base_body_b64,
-                x=0.265, y=1, sizex=1, sizey=1,
+                x=0.273, y=1, sizex=1, sizey=1,
                 xref="paper", yref="paper",
                 layer="below"
             )
@@ -93,7 +93,7 @@ def create_body_diagram():
         if arteries_b64:
             fig.add_layout_image(
                 source=arteries_b64,
-                x=0.24, y=0.83, sizex=0.8, sizey=0.7,
+                x=0.255, y=0.83, sizex=0.8, sizey=0.7,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -106,7 +106,7 @@ def create_body_diagram():
         if pancreas_b64:
             fig.add_layout_image(
                 source=pancreas_b64,
-                x=0.42, y=0.60, sizex=0.08, sizey=0.08,
+                x=0.361, y=0.60, sizex=0.09, sizey=0.09,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -119,7 +119,7 @@ def create_body_diagram():
         if left_kidney_b64:
             fig.add_layout_image(
                 source=left_kidney_b64,
-                x=0.39, y=0.61, sizex=0.08, sizey=0.08,
+                x=0.345, y=0.61, sizex=0.08, sizey=0.08,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -132,7 +132,7 @@ def create_body_diagram():
         if right_kidney_b64:
             fig.add_layout_image(
                 source=right_kidney_b64,
-                x=0.48, y=0.61, sizex=0.08, sizey=0.08,
+                x=0.395, y=0.61, sizex=0.08, sizey=0.08,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -145,7 +145,7 @@ def create_body_diagram():
         if stomach_b64:
             fig.add_layout_image(
                 source=stomach_b64,
-                x=0.41, y=0.70, sizex=0.16, sizey=0.16,
+                x=0.338, y=0.70, sizex=0.16, sizey=0.16,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -158,7 +158,7 @@ def create_body_diagram():
         if liver_b64:
             fig.add_layout_image(
                 source=liver_b64,
-                x=0.36, y=0.70, sizex=0.16, sizey=0.16,
+                x=0.33, y=0.70, sizex=0.16, sizey=0.16,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -171,7 +171,7 @@ def create_body_diagram():
         if heart_b64:
             fig.add_layout_image(
                 source=heart_b64,
-                x=0.4, y=0.78, sizex=0.17, sizey=0.13,
+                x=0.35, y=0.78, sizex=0.17, sizey=0.13,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -184,7 +184,7 @@ def create_body_diagram():
         if lungs_b64:
             fig.add_layout_image(
                 source=lungs_b64,
-                x=0.37, y=0.85, sizex=0.22, sizey=0.22,
+                x=0.33, y=0.85, sizex=0.22, sizey=0.22,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -197,7 +197,7 @@ def create_body_diagram():
         if brain_b64:
             fig.add_layout_image(
                 source=brain_b64,
-                x=0.395, y=1.02, sizex=0.15, sizey=0.15,
+                x=0.344, y=1.02, sizex=0.15, sizey=0.15,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -210,7 +210,7 @@ def create_body_diagram():
         # Hover for Brain
         {
             'name': 'Brain', 
-            'x': 2.4, 
+            'x': 2.2, 
             'y': 19, 
             'info': 'Controls the nervous system',
             'affected_by': 'Stroke, High BP, Mental Health, High Cholesterol, and Heavy Alcohol Consumptions', 
@@ -219,7 +219,7 @@ def create_body_diagram():
         # Hover for Heart
         {
             'name': 'Heart', 
-            'x': 2.4, 
+            'x': 2.2, 
             'y': 14, 
             'info': 'Pumps blood',
             'affected_by': 'High Cholesterol, High BP, Stroke, Smoker, and Heart Disease or Attack',
@@ -228,7 +228,7 @@ def create_body_diagram():
         # Hover for Liver
         {
             'name': 'Liver', 
-            'x': 2.2, 
+            'x': 2.1, 
             'y': 13, 
             'info': 'Filters blood', 
             'affected_by': 'High Cholesterol and Heavy Alcohol Consumptions',
@@ -237,7 +237,7 @@ def create_body_diagram():
         # Hover for Pancreas
         {
             'name': 'Pancreas', 
-            'x': 2.4, 
+            'x': 2.2, 
             'y': 11.5,
             'info': 'Produces insulin', 
             'affected_by': 'Heavy Alcohol Consumptions',
@@ -246,8 +246,8 @@ def create_body_diagram():
         # Hover for Left Kidney
         {
             'name': 'Left Kidney', 
-            'x': 2.2, 
-            'y': 11, 
+            'x': 2.1, 
+            'y': 11.3, 
             'info': 'Filter blood', 
             'affected_by': 'High BP, Heavy Alcohol Consumptions',
             'index': 3
@@ -255,8 +255,8 @@ def create_body_diagram():
         # Hover for Right Kidney
         {
             'name': 'Right Kidney', 
-            'x': 2.5, 
-            'y': 11, 
+            'x': 2.25, 
+            'y': 11.3, 
             'info': 'Filter blood', 
             'affected_by': 'High BP, Heavy Alcohol Consumptions',
             'index': 4
@@ -264,7 +264,7 @@ def create_body_diagram():
         # Hover for Stomach
         {
             'name': 'Stomach', 
-            'x': 2.6, 
+            'x': 2.2, 
             'y': 12.5, 
             'info': 'Digests Food', 
             'affected_by': '-', 
@@ -273,7 +273,7 @@ def create_body_diagram():
         # Hover for Lungs
         {
             'name': 'Lungs', 
-            'x': 2.46, 
+            'x': 2.2, 
             'y': 15,
             'info': 'Oxygen exchange',
             'affected_by': 'Smoker',
@@ -282,7 +282,7 @@ def create_body_diagram():
         # Hover for Arteries (Plotted 3 times so user can find them easily!)
         {
             'name': 'Arteries', 
-            'x': 2.8, 
+            'x': 2.5, 
             'y': 12,
             'info': 'Carries Oxygen to the body',
             'affected_by': 'High Cholesterol, High BP, Stroke, and Heart Disease or Attack',
@@ -290,7 +290,7 @@ def create_body_diagram():
         },
         {
             'name': 'Arteries', 
-            'x': 2.5, 
+            'x': 2.35, 
             'y': 16,
             'info': 'Carries Oxygen to the body',
             'affected_by': 'High Cholesterol, High BP, Stroke, and Heart Disease or Attack',
@@ -298,7 +298,7 @@ def create_body_diagram():
         },
         {
             'name': 'Arteries', 
-            'x': 2.5, 
+            'x': 2.3, 
             'y': 8,
             'info': 'Carries Oxygen to the body',
             'affected_by': 'High Cholesterol, High BP, Stroke, and Heart Disease or Attack',
@@ -321,7 +321,10 @@ def create_body_diagram():
                 '<extra></extra>'
             ),
             customdata=[[organ['name'], organ['info'], organ['affected_by']]],
-            hoverlabel=dict(bgcolor="#EEC8A3", bordercolor="#931A23"),
+            hoverlabel=dict(
+                font= dict(color='black'),
+                bgcolor="#EEC8A3",
+                bordercolor="#931A23"),
             showlegend=False,
             visible=False
         ))
@@ -403,7 +406,7 @@ def create_body_diagram():
                 bgcolor="white",
                 bordercolor="black",
                 borderwidth=2,
-                font=dict(size=12),
+                font=dict(size=12, color = "black"),
             ),
         ] 
     )
