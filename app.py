@@ -245,10 +245,6 @@ if page == "Introduction":
     st.write("")
     st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
     st.markdown("---")
-    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
-
-
-    st.markdown("---")
 
     
     # BODY DIAGRAM - NEW SECTION
