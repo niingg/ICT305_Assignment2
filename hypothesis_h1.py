@@ -7,6 +7,12 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+# Color Constants
+PRIMARY = "#931A23"        # Your brand
+SECONDARY = "#E8C6AE"      # Accent
+BACKGROUND = "white"
+GRID = "rgba(0, 0, 0, 0.08)"
+
 
 def wilson(success, n, z=1.96):
     """Calculate Wilson score confidence interval"""
@@ -85,7 +91,7 @@ def create_individual_lifestyle_factors_chart(df):
     for i, y0 in enumerate(np.arange(0, ymax, 0.10)):
         if i % 2 == 0:
             fig.add_hrect(y0=y0, y1=min(y0+0.10, ymax),
-                          fillcolor="#F2F4F7", line_width=0, layer="below")
+                          fillcolor=BACKGROUND, line_width=0, layer="below")
     
     hover = "Factor: %{x}<br>%{fullData.name}: %{y:.1%}<br>n=%{customdata[0]}  cases=%{customdata[1]}<extra></extra>"
     
@@ -95,7 +101,7 @@ def create_individual_lifestyle_factors_chart(df):
         error_y=dict(type="data", array=tbl["with_hi"]-tbl["with_prev"],
                      arrayminus=tbl["with_prev"]-tbl["with_lo"], thickness=1),
         text=tbl["with_prev"].map(lambda v:f"{v:.1%}"), textposition="outside",
-        marker=dict(color="#A64A47", line=dict(color="rgba(0,0,0,0.15)", width=1)),
+        marker=dict(color=PRIMARY, line=dict(color=GRID, width=1)),
         customdata=np.stack([tbl["with_n"], tbl["with_cases"]], axis=-1),
         hovertemplate=hover,
     )
@@ -106,7 +112,7 @@ def create_individual_lifestyle_factors_chart(df):
         error_y=dict(type="data", array=tbl["without_hi"]-tbl["without_prev"],
                      arrayminus=tbl["without_prev"]-tbl["without_lo"], thickness=1),
         text=tbl["without_prev"].map(lambda v:f"{v:.1%}"), textposition="outside",
-        marker=dict(color="#E8C6AE", line=dict(color="rgba(0,0,0,0.12)", width=1)),
+        marker=dict(color=SECONDARY, line=dict(color=GRID, width=1)),
         customdata=np.stack([tbl["without_n"], tbl["without_cases"]], axis=-1),
         hovertemplate=hover,
     )
@@ -121,7 +127,7 @@ def create_individual_lifestyle_factors_chart(df):
                    range=[0, ymax], showgrid=False),
         legend=dict(orientation="h", x=0.5, xanchor="center", y=-0.18),
         template="simple_white",
-        paper_bgcolor="white", plot_bgcolor="white",
+        paper_bgcolor=BACKGROUND, plot_bgcolor=BACKGROUND,
         margin=dict(l=70, r=30, t=80, b=90),
         height=500,
     )
@@ -189,7 +195,7 @@ def create_risk_factors_chart(df):
         y=prev_rb["prevalence"],
         text=(prev_rb["prevalence"]*100).round(1).astype(str) + "%",
         textposition="outside",
-        marker=dict(color="#a64a47", line=dict(width=1, color="rgba(0,0,0,0.15)")),
+        marker=dict(color=PRIMARY, line=dict(width=1, color=GRID)),
         hovertemplate="<b>%{x}</b><br>Diabetes rate: %{y:.1%}<extra></extra>",
         cliponaxis=False
     ))
@@ -197,7 +203,7 @@ def create_risk_factors_chart(df):
     for i, y0 in enumerate(np.arange(0, ymax, step)):
         if i % 2 == 0:
             fig.add_hrect(y0=y0, y1=min(y0+step, ymax),
-                          fillcolor="#F2F4F7", line_width=0, layer="below")
+                          fillcolor=BACKGROUND, line_width=0, layer="below")
     
     fig.update_layout(
         title=dict(text="Diabetes prevalence increases with multiple lifestyle risk factors", x=0.02),
@@ -207,8 +213,8 @@ def create_risk_factors_chart(df):
         yaxis=dict(title="Diabetes Prevalence", range=[0, ymax], dtick=0.1, tickformat=".0%", showgrid=False),
         showlegend=False,
         height=500,
-        plot_bgcolor='white',
-        paper_bgcolor='white',
+        plot_bgcolor=BACKGROUND,
+        paper_bgcolor=BACKGROUND,
     )
     
     return fig
@@ -249,9 +255,8 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
     EDU_ORDER = [EDU_MAP[k] for k in (1,2,3,4,5,6)]
     AGE_ORDER = ["18–29","30–44","45–59","60–74","75+"]
     
-    COLOR_NO  = "#a64a47"   # inactive
-    COLOR_YES = "#D6B4B3"   # active
-    GRID      = "#e9eef3"
+    COLOR_NO  = PRIMARY   # inactive
+    COLOR_YES = SECONDARY  # active
     
     # Normalize data
     db = pd.to_numeric(df.get("diabetes_binary"), errors="coerce")
@@ -329,7 +334,7 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
         title=f"Physical Activity vs Diabetes by {title_note}<br><sup>% with diabetes — faceted</sup>"
     )
     fig.update_traces(
-        marker_line_width=1, marker_line_color="rgba(0,0,0,0.15)",
+        marker_line_width=1, marker_line_color=GRID,
         textposition="outside",
         hovertemplate="%{x}<br>%{y:.1%}<extra></extra>",
         showlegend=False,
@@ -342,8 +347,8 @@ def create_physical_activity_by_demographics_chart(df, facet_type="education"):
         showlegend=False,
         margin=dict(l=50, r=20, t=90, b=50),
         height=600,
-        plot_bgcolor='white',
-        paper_bgcolor='white',
+        plot_bgcolor=BACKGROUND,
+        paper_bgcolor=BACKGROUND,
     )
     
     return fig

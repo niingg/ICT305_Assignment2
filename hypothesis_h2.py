@@ -8,6 +8,10 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
+# Color Constants
+PRIMARY = "#931A23"        # Your brand
+SECONDARY = "#E8C6AE"      # Accent
+GRID = "rgba(0, 0, 0, 0.08)"
 
 def create_education_health_behaviors_chart(df):
     """
@@ -227,7 +231,7 @@ def create_income_diabetes_by_education_chart(df):
         z=pivot.values,
         x=pivot.columns,
         y=pivot.index,
-        colorscale="Reds",
+        colorscale=[[0, "#FFE8E8"], [1, "#931A23"]],
         text=np.round(pivot.values, 1),
         texttemplate="%{text:.1f}%",
         textfont={"size":10},

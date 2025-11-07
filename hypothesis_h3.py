@@ -10,6 +10,11 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+# Color Constants
+PRIMARY = "#931A23"        # Your brand
+SECONDARY = "#E8C6AE"      # Accent
+GRID = "rgba(0, 0, 0, 0.08)"
+
 
 def create_healthcare_coverage_chart(df):
     """

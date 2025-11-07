@@ -416,7 +416,6 @@ def display_body_diagram():
     Display the body diagram in Streamlit.
     This is the function that app.py calls.
     """
-    st.subheader("🫀 How Diabetes Affects Your Body")
     st.write("""
     Diabetes can affect multiple organs and systems in your body. 
     Use the dropdown below to explore which organs are affected by different conditions:

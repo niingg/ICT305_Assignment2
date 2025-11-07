@@ -7,6 +7,10 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+# Color Constants
+PRIMARY = "#931A23"        # Your brand
+SECONDARY = "#E8C6AE"      # Accent
+GRID = "rgba(0, 0, 0, 0.08)"
 
 def create_preexisting_conditions_chart(df):
     """

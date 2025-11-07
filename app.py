@@ -3,6 +3,65 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+# ============================================================================
+# STYLING FUNCTIONS
+# ============================================================================
+
+# Color constants
+COLORS = {
+    "primary": "#931A23",
+    "secondary": "#E8C6AE",        # Accent (light tan)
+    "positive": "#2ECC71",         # Green (good data)
+    "neutral": "#3498DB",          # Blue (neutral)
+    "background_grid": "#F2F4F7",  # Light background
+    "grid": "rgba(0, 0, 0, 0.08)", # Grid lines
+    "success": "#2ECC71",
+    "warning": "#F39C12",
+    "error": "#E74C3C",
+    "header_bg": "#FFE5E5",
+}
+
+# function to use to style all headers
+def styled_heading(text, level=2, color=COLORS["primary"]):
+    """
+    Display a heading with custom color and serif font.
+    
+    Args:
+        text (str): Heading text
+        level (int): 1 for h1, 2 for h2, 3 for h3
+        color (str): Hex color for the heading
+    """
+    tags = {1: "h1", 2: "h2", 3: "h3"}
+    tag = tags.get(level, "h2")
+    font_sizes = {1: "32px", 2: "24px", 3: "18px"}
+    font_size = font_sizes.get(level, "24px")
+    html = f"<{tag} style='color: {color}; font-size: {font_size};'>{text}</{tag}>"
+    st.markdown(html, unsafe_allow_html=True)
+
+# function to add background colour for header
+def styled_header():
+    """
+    Display the app header with light red background and serif font.
+    Replaces the default header styling with professional branding.
+    """
+    html = f"""
+    <div style='
+        background-color: {COLORS["header_bg"]};
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    '>
+        <h1 style='
+            text-align: center;
+            color: {COLORS["primary"]};
+            font-size: 40px;
+            margin: 0;
+        '>Diabetes Risk Factors Dashboard</h1>
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+    st.markdown("---")
+
 # Import hypothesis modules with functions
 from hypothesis_h1 import (
     create_risk_factors_chart,
@@ -62,19 +121,18 @@ page = st.sidebar.radio("Go to:", [
     "Conclusion"
 ])
 
-# -header
-st.markdown("<h1 style='text-align: center;'>Diabetes Risk Factors Dashboard</h1>", unsafe_allow_html=True)
-st.markdown("---")
+# Header with light red background and serif font
+styled_header()
 
 # ==============
 # PAGE CONTENT
 # ==============
 
 if page == "Introduction":
-    st.subheader("Introduction")
+    styled_heading("Introduction")
     st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
 
-    st.subheader("Case Introduction")
+    styled_heading("Case Introduction", level=2)
     st.write("""
     Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. 
     If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage. 
@@ -85,7 +143,7 @@ if page == "Introduction":
 
     st.markdown("---")
 
-    st.subheader("Dataset Overview")
+    styled_heading("Dataset Overview", level=2)
     st.write("""
     The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
     which contains health-related behavioral data collected by the CDC.
@@ -129,6 +187,7 @@ if page == "Introduction":
     st.markdown("---")
     
     # BODY DIAGRAM - NEW SECTION
+    styled_heading("🫀 How Diabetes Affects Your Body")
     display_body_diagram()
     
 # =====================
@@ -136,7 +195,7 @@ if page == "Introduction":
 # =====================
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
-    st.subheader("Hypothesis 1: Lifestyle Habits and Diabetes")
+    styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=2)
     st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
     st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
     st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
@@ -153,7 +212,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - People who smoke or don’t exercise have much higher diabetes rates than those who don’t.
         - Physical inactivity (62%) shows the strongest link with diabetes risk.
@@ -166,7 +225,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         fig1 = create_risk_factors_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - The more unhealthy habits a person has, the higher their diabetes risk.
         - Diabetes rate increases from 38% (no risks) to nearly 60% (three risks).
@@ -187,7 +246,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         fig2 = create_physical_activity_by_demographics_chart(df, facet_type=facet_map[facet_choice])
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - Across all groups, physically active people have much lower diabetes rates than inactive ones.
         - The gap is largest among older adults (60–74) and those with less education.
@@ -199,7 +258,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
 # ===============
 
 elif page == "**H2**: Education and Diabetes":
-    st.subheader("Hypothesis 2: Education and Diabetes")
+    styled_heading("Hypothesis 2: Education and Diabetes", level=2)
     st.write("Now that you understand how lifestyle factors affect diabetes, let's dive into demographic influences!")
     st.write("The graph in the **first tab** investigates how education level impacts health behaviors, namely diet, physical activity, and regular checkups.")
     st.write("The **second tab** explores the direct relationship between education level and diabetes prevalence.")
@@ -220,7 +279,7 @@ elif page == "**H2**: Education and Diabetes":
         fig1 = create_education_health_behaviors_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - People with higher education levels are more likely to eat well, stay active, and go for regular checkups.
         - The rate of healthy diet, exercise, and screenings all rise from “Less than High School” to “College Graduate.
@@ -234,7 +293,7 @@ elif page == "**H2**: Education and Diabetes":
         fig2 = create_education_diabetes_trend_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - The rate of diabetes clearly decreases as education level increases.
         - Those with less than high school have about 68% diabetes rate, while college graduates have around 40%.
@@ -247,7 +306,7 @@ elif page == "**H2**: Education and Diabetes":
         fig3 = create_income_diabetes_by_education_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights", level=2)
         st.write("""
         - People with low income and low education have the highest diabetes rates across all groups.
         - As income and education increase together, the diabetes rate drops steadily.
@@ -260,7 +319,7 @@ elif page == "**H2**: Education and Diabetes":
         fig4 = create_education_lifestyle_diabetes_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - With more education, people are more active and eat more fruits and vegetables.
         - At the same time, diabetes rates drop steadily as education level rises.
@@ -272,7 +331,7 @@ elif page == "**H2**: Education and Diabetes":
 # ============================================================================
 
 elif page == "**H3**: Healthcare Access and Diabetes":
-    st.subheader("Hypothesis 3: Healthcare Access and Diabetes")
+    styled_heading("Hypothesis 3: Healthcare Access and Diabetes", level=2)
     st.write("""
     **Hypothesis**: Limited access to healthcare – due to cost barriers, lack of regular care, or low income – 
     is associated with higher rates of diabetes.
@@ -295,7 +354,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         fig1 = create_healthcare_coverage_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Diabetes rates are consistently higher among those without healthcare coverage or with cost barriers.
         - Low-income groups (<$25k) show the largest gap between “Yes” and “No” responses.
@@ -308,7 +367,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         fig2 = create_income_trends_dual_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Diabetes rates decline steadily with higher income levels.
         - The lowest-income groups (<$15k) have diabetes rates nearly double that of the highest-income group.
@@ -321,7 +380,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         fig3 = create_access_barriers_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - 0 barriers has the lowest diabetes rate and 2 barriers has the highest diabetes rate.
         - The jump from 0 to 2 barriers shows a clear compounding effect.
@@ -333,7 +392,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
 # ============================================================================
 
 elif page == "**H4**: Self-Rated Health and Diabetes":
-    st.subheader("Hypothesis 4: Self-Rated Health and Diabetes")
+    styled_heading("Hypothesis 4: Self-Rated Health and Diabetes")
     st.write("""
     **Hypothesis**: Poor self-rated health and functional limitations – including low general health ratings, 
     more unhealthy days, and difficulty walking – are strongly associated with diabetes.
@@ -356,7 +415,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         fig1 = create_health_trends_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Moving from Excellent to Poor self-rated health, diabetes rises sharply.
         - Mental and physical unhealthy days increase in parallel.
@@ -370,7 +429,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         fig2 = create_functional_limitations_comparison_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Difficulty walking = much higher diabetes rate.
         - Regular physical activity = lower diabetes rate.
@@ -383,7 +442,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         fig3 = create_physical_activity_demographics_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - In every facet, active groups have lower diabetes rates.
         - (60+) and obese groups gain the largest benefit from activity.
@@ -396,7 +455,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         fig4 = create_functional_limitations_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Having any physical limitation greatly increases the chance of diabetes.
         - The difference between having no limitations and at least one is large and consistent.
@@ -408,7 +467,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
 # ============================================================================
 
 elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
-    st.subheader("Hypothesis 5: Pre-existing Health Conditions and Diabetes")
+    styled_heading("Hypothesis 5: Pre-existing Health Conditions and Diabetes")
     st.write("""
     **Hypothesis**: Individuals with pre-existing cardiometabolic conditions – such as stroke, heart disease or heart attack, 
     high blood pressure, high cholesterol, and elevated BMI – are more likely to be diagnosed with diabetes.
@@ -432,7 +491,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         fig1 = create_preexisting_conditions_chart(df)
         st.plotly_chart(fig1, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - All four conditions show much higher diabetes rates for those affected vs those without.
         - Heart disease (75%) and stroke (74%) have the highest diabetes prevalence, showing strong comorbidity.
@@ -445,7 +504,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         fig2 = create_preexisting_conditions_demographics_chart(df)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Diabetes rates rise steadily with age, with the sharpest jump seen from middle to older adults (45+).
         - Individuals with pre-existing conditions experience a much higher prevalence across all ages — from 16% (18–29) to 65% (60–74).
@@ -458,7 +517,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         fig3 = create_bmi_categories_chart(df)
         st.plotly_chart(fig3, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Diabetes rates rise progressively with BMI, from 26% (underweight) to 76% (Class 3 obesity).
         - The sharpest increase begins at BMI ≥30 (obesity threshold).
@@ -471,7 +530,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
         fig4 = create_condition_count_chart(df)
         st.plotly_chart(fig4, use_container_width=True)
         st.markdown("---")
-        st.subheader("Key Insights")
+        styled_heading("Key Insights")
         st.write("""
         - Older people have a higher chance of diabetes than younger ones.
         - People with other health problems (like high blood pressure or heart disease) are much more likely to have diabetes at every age.
@@ -494,7 +553,7 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 1: Summary of Findings
-    st.subheader("Summary of Findings")
+    styled_heading("Summary of Findings")
     
     col1, col2, col3, col4, col5 = st.columns(5)
     
@@ -541,7 +600,7 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 2: Detailed Findings
-    st.subheader("Detailed Findings by Hypothesis")
+    styled_heading("Detailed Findings by Hypothesis")
     
     st.write("""
     #### **H1: Lifestyle Habits**
@@ -585,7 +644,7 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 3: Sankey Diagram (NEW!)
-    st.subheader("Data Flow & Hypothesis Conclusions")
+    styled_heading("Data Flow & Hypothesis Conclusions")
     st.write("This Sankey diagram visualizes how data variables flow through each hypothesis to their conclusions (Accept/Reject):")
     
     # Display the Sankey diagram
@@ -604,7 +663,7 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 4: Recommendations
-    st.subheader("Key Recommendations")
+    styled_heading("Key Recommendations")
     
     col1, col2 = st.columns(2)
     
@@ -629,7 +688,7 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 5: Data Notes
-    st.subheader("Data Notes")
+    styled_heading("Data Notes")
     st.write(f"""
     - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes)
     - **Sample Size**: {df.shape[0]:,} individuals
