@@ -12,24 +12,21 @@ PRIMARY = "#931A23"        # Your brand
 SECONDARY = "#E8C6AE"      # Accent
 GRID = "rgba(0, 0, 0, 0.08)"
 
-def create_preexisting_conditions_chart(df):
+def create_preexisting_conditions_chart(df, sort_by="Prevalence"):
     """
     Create an interactive chart showing diabetes rates and relative risk for individual pre-existing conditions.
-    Dropdown allows switching between:
-    - Prevalence: Diabetes rate for each condition (Yes vs No)
-    - Relative Risk: Ratio of diabetes rate (Yes/No) for each condition
-    
-    Conditions analyzed: Stroke, Heart Disease, High Blood Pressure, High Cholesterol
     
     Parameters:
     -----------
     df : pandas.DataFrame
         The diabetes dataset
+    sort_by : str
+        One of: "Prevalence" or "Relative Risk"
     
     Returns:
     --------
     plotly.graph_objects.Figure
-        Interactive figure with dropdown to switch between sorting methods
+        Figure sorted by selected metric
     """
     df = df.copy()
     df.columns = df.columns.str.lower()
@@ -43,7 +40,6 @@ def create_preexisting_conditions_chart(df):
     
     # Calculate prevalence and relative risk for each condition
     prevalence_data = []
-    relative_risk_data = []
     
     for condition_name, condition_col in conditions.items():
         # Calculate diabetes rate for Yes and No
@@ -59,115 +55,48 @@ def create_preexisting_conditions_chart(df):
             'Yes Rate': yes_rate,
             'Relative Risk': relative_risk
         })
-        
-        relative_risk_data.append({
-            'Condition': condition_name,
-            'No Rate': no_rate,
-            'Yes Rate': yes_rate,
-            'Relative Risk': relative_risk
-        })
     
-    prev_df = pd.DataFrame(prevalence_data).sort_values('Yes Rate', ascending=False)
-    risk_df = pd.DataFrame(relative_risk_data).sort_values('Relative Risk', ascending=False)
+    if sort_by == "Relative Risk":
+        sorted_data = sorted(prevalence_data, key=lambda x: x['Relative Risk'], reverse=True)
+    else:  # Prevalence
+        sorted_data = sorted(prevalence_data, key=lambda x: x['Yes Rate'], reverse=True)
+    
+    sorted_df = pd.DataFrame(sorted_data)
     
     # Create figure
     fig = go.Figure()
     
-    # Trace 1: Prevalence sorted (default - visible)
-    for i, row in prev_df.iterrows():
+    # Add traces for each condition
+    for i, row in sorted_df.iterrows():
         # No group (light tan)
         fig.add_trace(go.Bar(
             x=[row['Condition']],
             y=[row['No Rate']],
-            name='No',
+            name='No' if i == 0 else None,
             marker=dict(color='#E8C6AE'),
             text=[f"{row['No Rate']:.1f}"],
             textposition='outside',
-            legendgroup='Prevalence_No',
-            showlegend=(row['Condition'] == prev_df.iloc[0]['Condition']),
-            visible=True,
+            legendgroup='No',
+            showlegend=(i == 0),
             hovertemplate='<b>%{x}</b><br>No Condition: %{y:.1f}%<extra></extra>',
         ))
         
-        # Yes group (dark red)
+        # Yes group (dark red) - FIXED: Pass relative risk as customdata
         fig.add_trace(go.Bar(
             x=[row['Condition']],
             y=[row['Yes Rate']],
-            name='Yes',
+            name='Yes' if i == 0 else None,
             marker=dict(color='#931A23'),
             text=[f"{row['Yes Rate']:.1f}"],
             textposition='outside',
-            legendgroup='Prevalence_Yes',
-            showlegend=(row['Condition'] == prev_df.iloc[0]['Condition']),
-            visible=True,
-            hovertemplate='<b>%{x}</b><br>Has Condition: %{y:.1f}%<extra></extra>',
+            legendgroup='Yes',
+            showlegend=(i == 0),
+            customdata=[[row['Relative Risk']]],
+            hovertemplate='<b>%{x}</b><br>Has Condition: %{y:.1f}%<br>Relative Risk: %{customdata[0][0]:.2f}x<extra></extra>',
         ))
     
-    # Trace 2: Relative Risk sorted (hidden - will show with dropdown)
-    for i, row in risk_df.iterrows():
-        # No group (light tan)
-        fig.add_trace(go.Bar(
-            x=[row['Condition']],
-            y=[row['No Rate']],
-            name='No',
-            marker=dict(color='#E8C6AE'),
-            text=[f"{row['No Rate']:.1f}"],
-            textposition='outside',
-            legendgroup='Risk_No',
-            showlegend=False,
-            visible=False,
-            hovertemplate='<b>%{x}</b><br>No Condition: %{y:.1f}%<br>Relative Risk: %{customdata[0]:.2f}x<extra></extra>',
-            customdata=[[row['Relative Risk']]],
-        ))
-        
-        # Yes group (dark red)
-        fig.add_trace(go.Bar(
-            x=[row['Condition']],
-            y=[row['Yes Rate']],
-            name='Yes',
-            marker=dict(color='#931A23'),
-            text=[f"{row['Yes Rate']:.1f}"],
-            textposition='outside',
-            legendgroup='Risk_Yes',
-            showlegend=False,
-            visible=False,
-            hovertemplate='<b>%{x}</b><br>Has Condition: %{y:.1f}%<br>Relative Risk: %{customdata[0]:.2f}x<extra></extra>',
-            customdata=[[row['Relative Risk']]],
-        ))
-    
-    # Create dropdown menu
     fig.update_layout(
-        updatemenus=[dict(
-            active=0,
-            buttons=[
-                dict(
-                    label='Sort by Prevalence',
-                    method='update',
-                    args=[
-                        {'visible': [True] * 8 + [False] * 8},
-                        {'title': 'Effect of Pre-Existing Factors on Diabetes Rates',
-                         'xaxis.title': 'Pre-Existing Factors'}
-                    ]
-                ),
-                dict(
-                    label='Sort by Relative Risk',
-                    method='update',
-                    args=[
-                        {'visible': [False] * 8 + [True] * 8},
-                        {'title': 'Effect of Pre-Existing Factors on Diabetes Rates (Sorted by Relative Risk)',
-                         'xaxis.title': 'Pre-Existing Factors'}
-                    ]
-                )
-            ],
-            direction='down',
-            pad={'r': 10, 't': 10},
-            showactive=True,
-            x=0.12,
-            xanchor='left',
-            y=1.15,
-            yanchor='top'
-        )],
-        title_text="Effect of Pre-Existing Factors on Diabetes Rates",
+        title_text=f"Effect of Pre-Existing Factors on Diabetes Rates (Sorted by {sort_by})",
         height=500,
         barmode='group',
         plot_bgcolor='white',

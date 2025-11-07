@@ -87,7 +87,6 @@ from hypothesis_h3 import (
 from hypothesis_h4 import (
     create_health_trends_chart,
     create_functional_limitations_comparison_chart,
-    create_physical_activity_demographics_chart,
     create_functional_limitations_chart,
 )
 
@@ -132,9 +131,16 @@ styled_header()
 
 if page == "Introduction":
     styled_heading("Introduction", level=1, align="center")
-    st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
+    st.markdown("""
+    <div style='text-align: center; font-size: 18px;'>
+        Welcome to the <b>Diabetes Risk Factors Dashboard!</b>
+        Here you can explore various factors associated with diabetes risk.
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")  
 
-    styled_heading("Case Introduction", level=2)
+
+    styled_heading("The Case", level=2)
     st.write("""
     Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage.
              
@@ -175,9 +181,12 @@ if page == "Introduction":
     After progressing through the hypotheses, main takeaways from the dashboard can are provided through a summary of the information and recommendations.
     """)
 
-    styled_heading("Target Audience", level=2)
+    st.markdown("---")
 
+    styled_heading("Target Audience", level=2, align="center" )
     col1, col2 = st.columns(2)
+    st.markdown("---")
+
     
     with col1:
         st.markdown(f"""
@@ -187,6 +196,7 @@ if page == "Introduction":
             </span>
         </div>
         """, unsafe_allow_html=True)
+        
     
     with col2:
         st.markdown(f"""
@@ -195,11 +205,11 @@ if page == "Introduction":
             <span style='color: #194875; font-size: 20px;'>Provide insights for the design of public health programmes</span>
         </div>
         """, unsafe_allow_html=True)
-
+    
     styled_heading("Dataset Overview", level=2)
     st.write("""
     The dataset used in this analysis is derived from the **BRFSS 2015 Health Indicators Data**, 
-    which contains health-related behavioral data collected by the CDC.
+    which contains health-related behavioral data collected by the CD from The United States of America.
     It includes various features such as BMI, blood pressure indicators, healthcare access, lifestyle habits, and health metrics.
              
     In total, the dataset has 22 variables. A glimpse of the data table is shown below:
@@ -213,32 +223,122 @@ if page == "Introduction":
     Based on these 22 variables, we decided to group them into a few different domains, as seen in the table below:
     """)
 
-    variables_info = pd.DataFrame(
-        {
-            "Domain": ["Lifestyle Habits", "Demographics", "Healthcare Access", "Self-Rated Health", "Pre-existing Conditions"],
-            "Variables": [
-                "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption", "Age, Sex, Education, Income, BMI",
-                "Healthcare Coverage, Cost Barriers, Regular Checkups", "General Health Rating, Mental Health, Physical Health, Difficulty Walking",
-                "Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol"]
-        })
-    st.table(variables_info)
+    variables_info = pd.DataFrame({
+        "Domain": [
+            "Lifestyle Habits", "Demographics", "Healthcare Access",
+            "Self-Rated Health", "Pre-existing Conditions"
+        ],
+        "Variables": [
+            "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption",
+            "Age, Sex, Education, Income, BMI",
+            "Healthcare Coverage, Cost Barriers, Regular Checkups",
+            "General Health Rating, Mental Health, Physical Health, Difficulty Walking",
+            "Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol"
+        ]
+    })
 
-    # Additional explanation
-    st.write("")
-    st.write("Based on the above groupings, we came up with our five hypotheses:")
-    st.write("1. Lifestyle Habits and Diabetes")
-    st.write("2. Education and Diabetes")
-    st.write("3. Healthcare Access and Diabetes")
-    st.write("4. Self-Rated Health and Diabetes")
-    st.write("5. Pre-existing Health Conditions and Diabetes")
-    st.write("")
-    st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
+    styled = (
+        variables_info.style
+            .hide(axis="index")
+            .set_table_styles([
+                # Header row: deep red background + white text
+                {"selector": "th.col_heading", "props": [("background-color", "#EEEEEE"), ("color", "grey"), ("font-weight", "500")]},
+                {"selector": "thead th",        "props": [("background-color", "#EEEEEE"), ("color", "grey"), ("font-weight", "500")]},
+                # Optional: nicer cell spacing
+                {"selector": "td",              "props": [("padding", "8px 10px"), ("vertical-align", "top")]},
+                {"selector": "th",              "props": [("padding", "10px")]}
+            ])
+    )
+
+    st.table(styled)
+
+    # --- Additional Explanation ---
+    st.markdown("""
+    <style>
+    /* Serif across this block */
+    .explain-wrap, .explain-wrap * 
+
+    /* Container */
+    .explain-wrap{
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.05);
+    margin-top: 6px;
+    }
+
+    /* Heading */
+    .explain-title{
+    font-weight: 800; margin: 0 0 6px 0; font-size: 20px;
+    color: %(primary)s;
+    }
+
+    /* Intro text */
+    .explain-lead{
+    margin: 6px 0 12px 0; color:#222; line-height:1.55;
+    }
+
+    /* Numbered list */
+    .explain-list{
+    counter-reset: num; list-style: none; padding-left: 0; margin: 8px 0 10px 0;
+    }
+    .explain-list li{
+    counter-increment: num; position: relative;
+    margin: 8px 0; padding-left: 40px; line-height: 1.5; color:#111;
+    }
+    .explain-list li::before{
+    content: counter(num) ".";
+    position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; line-height: 28px; text-align: center;
+    border-radius: 999px;
+    background: %(chip_bg)s; color: %(primary)s; font-weight: 700;
+    border: 1px solid #e6e9ef;
+    }
+
+    /* Closing line */
+    .explain-note{
+    margin-top: 10px; color:#333;
+    }
+
+    /* Dataset card */
+    .dataset-card{
+    margin-top: 14px;
+    padding: 14px 16px;
+    border: 1px solid #f0e3e3;
+    border-radius: 12px;
+    background: #fff7f7;
+    }
+    .dataset-card b{ color: %(primary)s; }
+    .dataset-link a{ text-decoration: none; border-bottom: 1px dotted %(primary)s; }
+    .dataset-link a:hover{ border-bottom-style: solid; }
+    </style>
+
+    <div class="explain-wrap">
+    <div class="explain-title">Additional explanation</div>
+    <div class="explain-lead">
+        Based on the above groupings, we arrived at five hypotheses that structure the dashboard:
+    </div>
+
+    <ol class="explain-list">
+        <li><b>Lifestyle Habits and Diabetes</b></li>
+        <li><b>Education and Diabetes</b></li>
+        <li><b>Healthcare Access and Diabetes</b></li>
+        <li><b>Self-Rated Health and Diabetes</b></li>
+        <li><b>Pre-existing Health Conditions and Diabetes</b></li>
+    </ol>
+
+    <div class="explain-note">
+        Our dashboard is organised by these five hypotheses — use the side navigation to jump into each section and explore the evidence.
+    </div>
+  
+    """ % {
+        "primary": COLORS.get("primary", "#8a0d12"),
+        "chip_bg": COLORS.get("chip_bg", "#f5f7fa"),
+    }, unsafe_allow_html=True)
+
     st.markdown("---")
-    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
 
-
-    st.markdown("---")
-    
     # BODY DIAGRAM - NEW SECTION
     styled_heading("🫀 How Diabetes Affects Your Body")
     display_body_diagram()
@@ -250,9 +350,9 @@ if page == "Introduction":
 elif page == "**H1**: Lifestyle Habits and Diabetes":
     styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=1, align="center")
     st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
-    st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
+    st.write("The **first tab** explores an overall view of how all the lifestyle factors listed impacts your diabetes risk.")
     st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
-    st.write("Lastly, the **third tab** shows..... [CLARIFY WITH GIZ AND NAT FOR EXPLANATION]")
+    st.write("Lastly, the **third tab** shows the impact of physical activity on the risk of developing diabetes. Use the dropdowns to filter by age group, sex and BMI.")
     
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -262,6 +362,8 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
     ])
     
     with tab1:
+        st.write("**Diabetes Prevalence by Lifestyle Habits**")
+        st.write("Shows the rate of diabetes for each type of lifestyle habit.")
         fig0 = create_individual_lifestyle_factors_chart(df)
         st.plotly_chart(fig0, use_container_width=True)
         st.markdown("---")
@@ -286,17 +388,16 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
         """)
     
     with tab3:
-        st.write("**Physical Activity vs Diabetes by Education, Age Group, and Sex**")
-        st.write("Choose which demographic to view:")
+        st.write("**Physical Activity vs Diabetes by Education, Age Group, and Sex**")       
         
-        facet_choice = st.selectbox(
-            "Select demographic view:",
-            ["Education", "Age Group", "Sex"],
-            key="h1_facet"
+        # SELECTBOX
+        demographic_choice = st.selectbox(
+            "Choose demographic to view:",
+            ["Age Group", "Sex", "BMI Category"],
+            key="h1_demographic"
         )
         
-        facet_map = {"Education": "education", "Age Group": "age", "Sex": "sex"}
-        fig2 = create_physical_activity_by_demographics_chart(df, facet_type=facet_map[facet_choice])
+        fig2 = create_physical_activity_by_demographics_chart(df, demographic=demographic_choice)
         st.plotly_chart(fig2, use_container_width=True)
         st.markdown("---")
         styled_heading("Key Insights", level=2)
@@ -393,6 +494,9 @@ elif page == "**H3**: Healthcare Access and Diabetes":
     The visualizations below show how healthcare access relates to diabetes rates across different demographic groups 
     and income levels.
     """)
+    st.write("The **first tab** consists of two graphs. The first graph investigates how healthcare coverage affects diabetes rates, while the second graph looks at how the ability to afford seeing a doctor affects diabetes rates.")
+    st.write("The **second tab** compares diabetes rates and healthcare coverage ownership rates across income groups.")
+    st.write("The **third tab** examines how the number of healthcare barriers (lack of coverage and inability to afford seeing a doctor) affects diabetes rates.")
 
     # Create tabs for different visualizations
     tab1, tab2, tab3 = st.tabs([
@@ -404,8 +508,22 @@ elif page == "**H3**: Healthcare Access and Diabetes":
     with tab1:
         st.write("**Healthcare Coverage & Cost Barriers by Income Level**")
         st.write("Use the dropdown to view data for different income levels:")
-        fig1 = create_healthcare_coverage_chart(df)
+        
+        # SELECTBOX FOR INCOME LEVEL
+        income_options = [
+            '< $10k', '$10k-$15k', '$15k-$20k', '$20k-$25k',
+            '$25k-$35k', '$35k-$50k', '$50k-$75k', '> $75k'
+        ]
+        selected_income = st.selectbox(
+            "Select income level:",
+            income_options,
+            index=4,  # Default to $25k-$35k
+            key="h3_income"
+        )
+        
+        fig1 = create_healthcare_coverage_chart(df, income_level=selected_income)
         st.plotly_chart(fig1, use_container_width=True)
+
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
@@ -435,9 +553,9 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
-        - 0 barriers has the lowest diabetes rate and 2 barriers has the highest diabetes rate.
-        - The jump from 0 to 2 barriers shows a clear compounding effect.
-        - Demonstrates that multiple healthcare challenges increase risk, not just add to it.
+        - Surprisingly, the number of access barriers does not have a significant impact on diabetes rates.
+        - Identical rates of diabetes are reported in groups with 0 and 2 barriers, with a minor spike in the group with only 1 barrier.
+        - This implies that access to healthcare does not improve prevention of diabetes.
         """)
 
 # ============================================================================
@@ -453,12 +571,14 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
     st.write("""
     The visualizations below show how various health indicators relate to diabetes across different demographic groups.
     """)
+    st.write("The **first tab** compares trends between the rate of diabetes against the number of days of poor physical and mental health.")
+    st.write("In the **second tab**, the first graph compares walking difficulty with diabetes rate, while the second graph contrasts physical activity against diabetes rate.")
+    st.write("The **third tab** investigates the cumulative effect of health limitations on diabetes rates.")
 
     # Create tabs for different visualizations
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         "Health Trends",
         "Functional Limitations",
-        "Physical Activity by Demographics",
         "Limitation Impact"
     ])
 
@@ -490,19 +610,6 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         """)
 
     with tab3:
-        st.write("**Physical Activity Impact Across Demographics**")
-        st.write("Use the dropdown to switch between Age Group, Sex, and BMI Category:")
-        fig3 = create_physical_activity_demographics_chart(df)
-        st.plotly_chart(fig3, use_container_width=True)
-        st.markdown("---")
-        styled_heading("Key Insights")
-        st.write("""
-        - In every facet, active groups have lower diabetes rates.
-        - (60+) and obese groups gain the largest benefit from activity.
-        - Males are slightly higher than females across states, but the activity gap dominates.
-        """)
-
-    with tab4:
         st.write("**Effect of Functional Limitations**")
         st.write("Shows diabetes rates by functional limitation status:")
         fig4 = create_functional_limitations_chart(df)
@@ -529,6 +636,10 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
     The visualizations below show how pre-existing health conditions relate to diabetes rates. 
     Pre-existing conditions include: Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol, and Elevated BMI (≥30).
     """)
+    st.write("The **first tab** compares the rate of diabetes across individuals who have/don’t have been diagnosed with one of the other four diseases.")
+    st.write("The **second tab** explores how having one or more pre-existing conditions impacts diabetes rates across different age groups.")
+    st.write("The **third tab** investigates the rate of diabetes across various BMI categories (based on the USA’s CDC classification).")
+    st.write("The **fourth tab** assesses how the accumulation of multiple pre-existing conditions influences diabetes prevalence.")
 
     # Create tabs for different visualizations
     tab1, tab2, tab3, tab4 = st.tabs([
@@ -541,8 +652,20 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
     with tab1:
         st.write("**Pre-existing Conditions and Diabetes Risk**")
         st.write("Use the dropdown to sort by Prevalence (diabetes rate) or Relative Risk (yes/no ratio):")
-        fig1 = create_preexisting_conditions_chart(df)
+        
+        # SELECTBOX FOR SORT METHOD
+        sort_method = st.selectbox(
+            "Sort by:",
+            ["Prevalence (diabetes rate)", "Relative Risk"],
+            key="h5_sort"
+        )
+        
+        # Map display name to function parameter
+        sort_param = "Relative Risk" if "Relative" in sort_method else "Prevalence"
+        
+        fig1 = create_preexisting_conditions_chart(df, sort_by=sort_param)
         st.plotly_chart(fig1, use_container_width=True)
+        
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
@@ -714,71 +837,48 @@ elif page == "Conclusion":
         Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
         These are the most controllable risk factors and represent the strongest opportunities for intervention.
     </p>
-    <span class="hypo-chip">High leverage for prevention</span>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown("")
 
     # H2
     st.markdown("""
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🎓</span> H2: Education</div>
     <p class="hypo-body hypo-muted">
-        To be completed by your group — exploring how educational attainment affects diabetes risk.
+        Diabetes prevalence decreases as the level of education increases. Higher education levels also correspond with better lifestyle habits. This implies that there is better knowledge about diabetes prevention with the attainment of formal education.
     </p>
-    <span class="hypo-chip">Action: add group findings</span>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown("")
+
 
     # H3
     st.markdown("""
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🏥</span> H3: Healthcare Access</div>
     <p class="hypo-body">
-        Healthcare access barriers create a powerful barrier to diabetes management and prevention.
-    </p>
-    <ul class="hypo-list">
-        <li><b>Income effect</b>: Lower income → less healthcare access → higher diabetes (clear trend)</li>
-        <li><b>Access barriers</b>: Multiple barriers compound the risk</li>
-        <li><b>Cardiovascular indicators</b>: Strongly predict diabetes risk</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: address disparities</span>
-    </div>
+        Higher rates of diabetes are reported in people with healthcare coverage, indicating that access to subsidized healthcare could encourage formal diagnosis of diabetes. However, the number of access barriers do not impact diabetes rates, which may suggest that access to healthcare does not guarantee prevention of diabetes.
     """, unsafe_allow_html=True)
-
+    st.markdown("")
+    
     # H4
     st.markdown("""
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🧭</span> H4: Self-Rated Health</div>
     <p class="hypo-body">
-        Subjective health assessments are reliable indicators of diabetes risk.
+        Self-health assessments, while subjective and informal, are reliable indicators of diabetes risk. Individuals who poorly rated their physical and mental health displayed higher rates of diabetes.
     </p>
-    <ul class="hypo-list">
-        <li><b>Health rating</b>: Excellent → Poor shows clear progression</li>
-        <li><b>Unhealthy days</b>: Both mental and physical health matter</li>
-        <li><b>Physical activity</b>: Protective effect across demographics</li>
-        <li><b>Functional limitations</b>: Substantially increase risk</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: holistic management</span>
-    </div>
     """, unsafe_allow_html=True)
+    st.markdown("")
 
     # H5
     st.markdown("""
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🫀</span> H5: Pre-existing Conditions</div>
     <p class="hypo-body">
-        Cardiometabolic conditions are strongly linked with diabetes.
+        Cardiometabolic conditions and obesity are strongly linked with diabetes rates. An increased risk of developing diabetes was observed in higher age demographics, as well as groups with multiple pre-existing conditions.
     </p>
-    <ul class="hypo-list">
-        <li><b>BMI</b>: Clear progression from underweight to obese</li>
-        <li><b>Cardiovascular disease</b>: Each condition independently increases risk</li>
-        <li><b>Cumulative effect</b>: Risk increases with multiple conditions</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: integrated care</span>
-    </div>
     """, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)  
@@ -838,4 +938,21 @@ elif page == "Conclusion":
     - **Sample Size**: {df.shape[0]:,} individuals
     - **Variables**: {df.shape[1]} health and demographic indicators
     - **Diabetes Prevalence**: 50% (balanced sample)
+    """)
+    st.markdown("---")
+
+    # SECTION 6: Citation
+    styled_heading("Reference")
+    st.write(f"""
+    - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes) https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators
+    - **Pictures**: 
+    - Arteries -> https://commons.wikimedia.org/wiki/File:Arterial_System.png 
+    - Body -> https://www.hiclipart.com/free-transparent-background-png-clipart-pxirg 
+    - Brain -> https://www.dreamstime.com/stock-illustration-brain-front-view-icon-human-hnternal-organs-symbol-vector-illustration-cartoon-style-isolated-white-background-image89183850 
+    - Heart -> https://www.istockphoto.com/vector/anatomical-heart-isolated-heart-diagnostic-center-sign-human-heart-cartoon-design-gm1177145926-328507854 
+    - Left and Right Kidneys -> https://pngtree.com/freepng/human-kidney_16414842.html 
+    - Liver -> https://pngtree.com/freepng/liver-frontal-liver-clip-art_6017745.html 
+    - Lungs -> https://pngtree.com/freepng/vector-illustration-of-lung-anatomy-in-medical-biology-set-against-a-white-background-vector_12922676.html 
+    - Pancreas -> https://pngtree.com/freepng/human-pancreas_16414480.html 
+    - Stomach -> https://pngtree.com/freepng/visceral-stomach_5420103.html 
     """)
