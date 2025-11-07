@@ -590,10 +590,10 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
-        - Moving from Excellent to Poor self-rated health, diabetes rises sharply.
-        - Mental and physical unhealthy days increase in parallel.
-        - Patterns suggest mutual reinforcement of poor wellbeing and diabetes.
-        - Self-ratings serve as a strong early signal.
+        - Diabetes rates rise sharply as self-rated health declines (Excellent → Poor), diabetes rises sharply.
+        - The number of days of poor mental and physical health show a parallel increase.
+        - Patterns suggest mutual reinforcement of poor well-being and diabetes.
+
         """)
 
     with tab2:
