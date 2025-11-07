@@ -190,7 +190,7 @@ if page == "Introduction":
         st.markdown(f"""
         <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
             <span style='font-size: 20px;'><strong>👥 General Public</strong></span><br>
-            <span style='color: #194875; font-size: 14px;'>Educate on risk factors and recommend lifestyle changes to reduce risk of diabetes
+            <span style='color: #194875; font-size: 14px;'>Inform about factors contributing to development of diabetes
             </span>
         </div>
         """, unsafe_allow_html=True)
