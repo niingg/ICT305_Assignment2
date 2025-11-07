@@ -387,12 +387,6 @@ def create_body_diagram():
         xaxis=dict(range=[1, 4]),   # X-axis range (min, max)
         yaxis=dict(range=[0, 20]),  # Y-axis range (min, max)
         hovermode='closest',
-        title={
-            'text': 'How Diabetes Affects Your Body',
-            'x': 0.5,
-            'xanchor': 'center',
-            'font': {'size': 20, 'color': '#931A23'}
-        },
         updatemenus=[
             dict(
                 buttons=dropdown_buttons,
