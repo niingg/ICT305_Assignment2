@@ -131,19 +131,70 @@ styled_header()
 # ==============
 
 if page == "Introduction":
-    styled_heading("Introduction", level=2)
+    styled_heading("Introduction", level=1, align="center")
     st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
 
     styled_heading("Case Introduction", level=2)
     st.write("""
-    Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. 
-    If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage. 
-
-    Understanding the **risk factors** associated with diabetes is crucial for early detection and prevention. 
-    This dashboard explores key health indicators and their relationship with the likelihood of developing diabetes.
+    Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage.
+             
+    Countries worldwide are grappling with the increasing prevalence of diabetes mellitus, commonly known as diabetes, within their populations. It was reported that 1 in 9 adults worldwide have been diagnosed with the condition in 2025, with the figure projected to grow to 1 in 8 by 2050.
+             
+    A contributing factor to this trend is an increase in diagnosis of Type 2 Diabetes, which has been associated with lifestyle factors such as poor dietary habits and lack of exercise.
     """)
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>💉 Type 1</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Insulin Deficiency</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>💊 Type 2</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Insulin Resistance</span>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
+
+    styled_heading("The Goal", level=2)
+    st.write("""
+    Despite the easy accessibility and availability of healthcare data, there is a lack of tools translating complex datasets into meaningful and actionable insights.
+             
+    This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for audiences with minimal medical knowledge.
+             
+    The five hypotheses in this dashboard are arranged according to the impact these five hypotheses have on the development of diabetes, in the order of least to most impactful.
+             
+    After progressing through the hypotheses, main takeaways from the dashboard can are provided through a summary of the information and recommendations.
+    """)
+
+    styled_heading("Target Audience", level=2)
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>👥 General Public</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Educate on risk factors and recommend actionable lifestyle changes to reduce risk of diabetes
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>🏛️ Governments and Policymakers</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Provide insights for the design of public health programmes</span>
+        </div>
+        """, unsafe_allow_html=True)
 
     styled_heading("Dataset Overview", level=2)
     st.write("""
@@ -197,7 +248,7 @@ if page == "Introduction":
 # =====================
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
-    styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=2)
+    styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=1, align="center")
     st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
     st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
     st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
@@ -260,7 +311,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
 # ===============
 
 elif page == "**H2**: Education and Diabetes":
-    styled_heading("Hypothesis 2: Education and Diabetes", level=2)
+    styled_heading("Hypothesis 2: Education and Diabetes",level=1, align="center")
     st.write("Now that you understand how lifestyle factors affect diabetes, let's dive into demographic influences!")
     st.write("The graph in the **first tab** investigates how education level impacts health behaviors, namely diet, physical activity, and regular checkups.")
     st.write("The **second tab** explores the direct relationship between education level and diabetes prevalence.")
@@ -333,7 +384,7 @@ elif page == "**H2**: Education and Diabetes":
 # ============================================================================
 
 elif page == "**H3**: Healthcare Access and Diabetes":
-    styled_heading("Hypothesis 3: Healthcare Access and Diabetes", level=2)
+    styled_heading("Hypothesis 3: Healthcare Access and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Limited access to healthcare – due to cost barriers, lack of regular care, or low income – 
     is associated with higher rates of diabetes.
@@ -394,7 +445,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
 # ============================================================================
 
 elif page == "**H4**: Self-Rated Health and Diabetes":
-    styled_heading("Hypothesis 4: Self-Rated Health and Diabetes")
+    styled_heading("Hypothesis 4: Self-Rated Health and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Poor self-rated health and functional limitations – including low general health ratings, 
     more unhealthy days, and difficulty walking – are strongly associated with diabetes.
@@ -469,7 +520,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
 # ============================================================================
 
 elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
-    styled_heading("Hypothesis 5: Pre-existing Health Conditions and Diabetes")
+    styled_heading("Hypothesis 5: Pre-existing Health Conditions and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Individuals with pre-existing cardiometabolic conditions – such as stroke, heart disease or heart attack, 
     high blood pressure, high cholesterol, and elevated BMI – are more likely to be diagnosed with diabetes.
@@ -545,7 +596,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
 # ============================================================================
 
 elif page == "Conclusion":
-    st.markdown("<h2 style='text-align: center;'>Conclusion</h2>", unsafe_allow_html=True)
+    styled_heading("Conclusion", level=1, align="center")
     
     # Introduction
     st.write("""
@@ -603,47 +654,138 @@ elif page == "Conclusion":
     
     # SECTION 2: Detailed Findings
     styled_heading("Detailed Findings by Hypothesis")
-    
-    st.write("""
-    #### **H1: Lifestyle Habits**
-    Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
-    These are the most controllable risk factors and represent the strongest opportunities for intervention.
-    
-    ---
-    
-    #### **H2: Education**
-    [To be completed by your group - exploring how educational attainment affects diabetes risk]
-    
-    ---
-    
-    #### **H3: Healthcare Access**
-    Healthcare access barriers create a powerful barrier to diabetes management and prevention.
-    - **Income effect**: Lower income → less healthcare access → higher diabetes (clear trend)
-    - **Access barriers**: Multiple barriers compound the risk
-    - **Cardiovascular indicators**: Strongly predict diabetes risk
-    - **Implication**: Addressing healthcare disparities is critical
-    
-    ---
-    
-    #### **H4: Self-Rated Health**
-    Subjective health assessments are reliable indicators of diabetes risk.
-    - **Health rating**: Excellent to Poor shows clear progression
-    - **Unhealthy days**: Both mental and physical health matter
-    - **Physical activity**: Protective effect across all demographics
-    - **Functional limitations**: Substantially increase risk
-    - **Implication**: Holistic health management is essential
-    
-    ---
-    
-    #### **H5: Pre-existing Conditions**
-    Cardiometabolic conditions are strongly linked with diabetes.
-    - **BMI**: Shows clear progression from underweight to obese
-    - **Cardiovascular disease**: Each condition independently increases risk
-    - **Cumulative effect**: Risk increases exponentially with multiple conditions
-    - **Implication**: Integrated care for multiple conditions is needed
-    """)
-    
-    st.markdown("---")
+
+
+    # CSS 
+    st.markdown("""
+    <style>
+    :root{
+    --card-bg: #ffffff;
+    --card-border: #ebedf0;
+    --card-shadow: 0 6px 18px rgba(0,0,0,.06);
+    --title: #8a0d12;        /* deep red accent */
+    --muted: #5b616e;
+    --chip-bg: #f5f7fa;
+    --chip-text: #3d4551;
+    }
+    .hypo-grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    margin: 8px 0 4px 0;
+    }
+    .hypo-card{
+    grid-column: span 12;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 18px 18px 14px 18px;
+    box-shadow: var(--card-shadow);
+    }
+    @media (min-width: 900px){
+    .hypo-card.half{ grid-column: span 6; }
+    }
+    .hypo-title{
+    display:flex; align-items:center; gap:10px;
+    font-weight: 800; font-size: 20px; color: var(--title); margin: 0 0 8px 0;
+    }
+    .hypo-title .emoji{ font-size: 22px; }
+    .hypo-body{ color:#111; line-height:1.5; margin: 0 0 8px 0; }
+    .hypo-muted{ color: var(--muted); }
+    .hypo-list{ margin: 6px 0 0 0; padding-left: 20px; }
+    .hypo-chip{
+    display:inline-block; margin-top:10px;
+    background: var(--chip-bg); color: var(--chip-text);
+    border: 1px solid #e6e9ef; border-radius: 999px;
+    padding: 6px 10px; font-size: 12px; font-weight: 600;
+    }
+    .hr{ height: 1px; background: #f0f2f6; margin: 10px 0 4px 0; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- Layout as responsive grid of cards ---
+    st.markdown('<div class="hypo-grid">', unsafe_allow_html=True)
+
+    # H1
+    st.markdown("""
+    <div class="hypo-card">
+    <div class="hypo-title"><span class="emoji">🥦</span> H1: Lifestyle Habits</div>
+    <p class="hypo-body">
+        Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
+        These are the most controllable risk factors and represent the strongest opportunities for intervention.
+    </p>
+    <span class="hypo-chip">High leverage for prevention</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H2
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🎓</span> H2: Education</div>
+    <p class="hypo-body hypo-muted">
+        To be completed by your group — exploring how educational attainment affects diabetes risk.
+    </p>
+    <span class="hypo-chip">Action: add group findings</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H3
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🏥</span> H3: Healthcare Access</div>
+    <p class="hypo-body">
+        Healthcare access barriers create a powerful barrier to diabetes management and prevention.
+    </p>
+    <ul class="hypo-list">
+        <li><b>Income effect</b>: Lower income → less healthcare access → higher diabetes (clear trend)</li>
+        <li><b>Access barriers</b>: Multiple barriers compound the risk</li>
+        <li><b>Cardiovascular indicators</b>: Strongly predict diabetes risk</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: address disparities</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H4
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🧭</span> H4: Self-Rated Health</div>
+    <p class="hypo-body">
+        Subjective health assessments are reliable indicators of diabetes risk.
+    </p>
+    <ul class="hypo-list">
+        <li><b>Health rating</b>: Excellent → Poor shows clear progression</li>
+        <li><b>Unhealthy days</b>: Both mental and physical health matter</li>
+        <li><b>Physical activity</b>: Protective effect across demographics</li>
+        <li><b>Functional limitations</b>: Substantially increase risk</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: holistic management</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H5
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🫀</span> H5: Pre-existing Conditions</div>
+    <p class="hypo-body">
+        Cardiometabolic conditions are strongly linked with diabetes.
+    </p>
+    <ul class="hypo-list">
+        <li><b>BMI</b>: Clear progression from underweight to obese</li>
+        <li><b>Cardiovascular disease</b>: Each condition independently increases risk</li>
+        <li><b>Cumulative effect</b>: Risk increases with multiple conditions</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: integrated care</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)  
+
+    # Soft divider 
+    st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
+
     
     # SECTION 3: Sankey Diagram (NEW!)
     styled_heading("Data Flow & Hypothesis Conclusions")
