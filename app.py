@@ -38,6 +38,7 @@ from hypothesis_h5 import (
 )
 
 from conclusion import create_sankey_diagram
+from introduction import display_body_diagram
 
 # Load dataset
 df = pd.read_csv('diabetes.csv')
@@ -107,6 +108,11 @@ if page == "Introduction":
     st.write(f"- Number of features: {df.shape[1]}")
     st.write(f"- Diabetes prevalence: {df['diabetes_binary'].mean():.1%}")
 
+    st.markdown("---")
+    
+    # BODY DIAGRAM - NEW SECTION
+    display_body_diagram()
+    
     st.markdown("---")
     st.info("Use the sidebar to explore each hypothesis and see how these factors relate to diabetes risk.")
 
