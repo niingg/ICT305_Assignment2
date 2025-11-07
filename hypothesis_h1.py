@@ -221,135 +221,188 @@ def create_risk_factors_chart(df):
     return fig
 
 
-def create_physical_activity_by_demographics_chart(df, facet_type="education"):
+def create_physical_activity_by_demographics_chart(df, demographic="Age Group"):
     """
-    Create faceted bar charts showing physical activity vs diabetes by education, age, or sex.
-    
-    Shows diabetes rates for active vs inactive people across different demographic groups.
-    Each demographic is shown in its own facet for easy comparison.
+    Create an interactive chart showing diabetes rates by physical activity
+    across a selected demographic.
     
     Parameters:
     -----------
     df : pandas.DataFrame
         The diabetes dataset
-    facet_type : str
-        Which demographic to facet by: "education", "age", or "sex"
+    demographic : str
+        One of: "Age Group", "Sex", "BMI Category"
     
     Returns:
     --------
     plotly.graph_objects.Figure
-        Faceted bar charts
+        Plotly figure showing the selected demographic view
     """
     df = df.copy()
     df.columns = df.columns.str.lower()
     
-    import plotly.express as px
+    def map_age_to_range(age):
+        if age <= 2:
+            return '18-29'
+        elif age <= 4:
+            return '30-44'
+        elif age <= 6:
+            return '45-59'
+        elif age <= 12:
+            return '60-74'
+        else:
+            return '75+'
     
-    EDU_MAP = {
-        1: "K-only / None",
-        2: "Grades 1–8",
-        3: "Grades 9–11",
-        4: "HS Grad / GED",
-        5: "Some College / AA",
-        6: "College 4+",
-    }
-    EDU_ORDER = [EDU_MAP[k] for k in (1,2,3,4,5,6)]
-    AGE_ORDER = ["18–29","30–44","45–59","60–74","75+"]
+    sex_mapping = {0: 'Female', 1: 'Male'}
     
-    COLOR_NO  = PRIMARY   # inactive
-    COLOR_YES = SECONDARY  # active
+    def categorize_bmi(bmi):
+        if bmi < 18.5:
+            return 'Underweight'
+        elif bmi < 25:
+            return 'Normal'
+        elif bmi < 30:
+            return 'Overweight'
+        else:
+            return 'Obese'
     
-    # Normalize data
-    db = pd.to_numeric(df.get("diabetes_binary"), errors="coerce")
-    df["diabetes"] = (db == 1).astype(float)
+    df['age_group'] = df['age'].apply(map_age_to_range)
+    df['sex_label'] = df['sex'].map(sex_mapping)
+    df['bmi_category'] = df['bmi'].apply(categorize_bmi)
+    df['physactivity_label'] = df['physactivity'].map({0: 'No', 1: 'Yes'})
     
-    # physactivity -> Yes/No
-    pa = pd.to_numeric(df.get("physactivity"), errors="coerce")
-    pa = pa.where(pa.isin([0,1]), np.where(pa == 1, 1, 0))
-    df["phys_lbl"] = np.where(pa == 1, "Yes", "No")
+    def calculate_rates(group_by_col):
+        results = df.groupby([group_by_col, 'physactivity_label']).agg({
+            'diabetes_binary': ['mean', 'count']
+        }).reset_index()
+        
+        results.columns = [group_by_col, 'PhysActivity', 'Diabetes Rate', 'Count']
+        results['Diabetes Rate (%)'] = results['Diabetes Rate'] * 100
+        
+        return results
     
-    # Age groups
-    age = pd.to_numeric(df.get("age"), errors="coerce")
-    if age.dropna().between(1,13).all():
-        def map_agecode(a):
-            if a in (1,2): return "18–29"
-            if a in (3,4,5): return "30–44"
-            if a in (6,7,8): return "45–59"
-            if a in (9,10,11): return "60–74"
-            if a in (12,13): return "75+"
-            return np.nan
-        df["agegroup"] = age.astype("Int64").map(map_agecode)
+    age_data = calculate_rates('age_group')
+    sex_data = calculate_rates('sex_label')
+    bmi_data = calculate_rates('bmi_category')
+    
+    age_order = ['18-29', '30-44', '45-59', '60-74', '75+']
+    age_data['age_group'] = pd.Categorical(age_data['age_group'], categories=age_order, ordered=True)
+    age_data = age_data.sort_values('age_group')
+    
+    bmi_order = ['Underweight', 'Normal', 'Overweight', 'Obese']
+    bmi_data['bmi_category'] = pd.Categorical(bmi_data['bmi_category'], categories=bmi_order, ordered=True)
+    bmi_data = bmi_data.sort_values('bmi_category')
+    
+    # Select data based on demographic parameter
+    if demographic == "Age Group":
+        data = age_data
+        group_col = 'age_group'
+        groups_order = age_order
+        x_title = "Age Group"
+    elif demographic == "Sex":
+        data = sex_data
+        group_col = 'sex_label'
+        groups_order = None
+        x_title = "Sex"
+    else:  # BMI Category
+        data = bmi_data
+        group_col = 'bmi_category'
+        groups_order = bmi_order
+        x_title = "BMI Category"
+    
+    color_no = "#E8C6AE"
+    color_yes = "#931A23"
+    
+    fig = go.Figure()
+    
+    if groups_order is None:
+        groups = data[group_col].unique()
     else:
-        df["agegroup"] = pd.cut(age, [18,30,45,60,75,np.inf],
-                                labels=AGE_ORDER, right=False, include_lowest=True)
+        groups = groups_order
     
-    # Education
-    edu = pd.to_numeric(df.get("education"), errors="coerce").astype("Int64")
-    df["education_lbl"] = pd.Categorical(edu.map(EDU_MAP),
-                                         categories=EDU_ORDER, ordered=True)
+    for group in groups:
+        group_data = data[data[group_col] == group]
+        
+        no_activity = group_data[group_data['PhysActivity'] == 'No']
+        if not no_activity.empty:
+            fig.add_trace(go.Bar(
+                name='No',
+                x=[group],
+                y=no_activity['Diabetes Rate (%)'].values,
+                marker=dict(color=color_no, line=dict(color='white', width=2)),
+                text=[f"{val:.1f}%" for val in no_activity['Diabetes Rate (%)'].values],
+                textposition='outside',
+                customdata=np.column_stack((
+                    no_activity['Diabetes Rate (%)'].values,
+                    no_activity['Count'].values,
+                    [group] * len(no_activity)
+                )),
+                hovertemplate='<b>%{customdata[2]}</b><br>No Physical Activity<br>Diabetes Rate: %{customdata[0]:.1f}%<br>Count: %{customdata[1]:,}<extra></extra>',
+                legendgroup='No',
+                showlegend=(group == groups[0]),
+                offsetgroup=0
+            ))
+        
+        yes_activity = group_data[group_data['PhysActivity'] == 'Yes']
+        if not yes_activity.empty:
+            fig.add_trace(go.Bar(
+                name='Yes',
+                x=[group],
+                y=yes_activity['Diabetes Rate (%)'].values,
+                marker=dict(color=color_yes, line=dict(color='white', width=2)),
+                text=[f"{val:.1f}%" for val in yes_activity['Diabetes Rate (%)'].values],
+                textposition='outside',
+                customdata=np.column_stack((
+                    yes_activity['Diabetes Rate (%)'].values,
+                    yes_activity['Count'].values,
+                    [group] * len(yes_activity)
+                )),
+                hovertemplate='<b>%{customdata[2]}</b><br>Yes Physical Activity<br>Diabetes Rate: %{customdata[0]:.1f}%<br>Count: %{customdata[1]:,}<extra></extra>',
+                legendgroup='Yes',
+                showlegend=(group == groups[0]),
+                offsetgroup=1
+            ))
     
-    # Sex
-    s = pd.to_numeric(df.get("sex"), errors="coerce")
-    if s.dropna().isin([0,1]).all():
-        df["sex_lbl"] = s.map({0:"Female", 1:"Male"})
-    elif s.dropna().isin([1,2]).all():
-        df["sex_lbl"] = s.map({1:"Male", 2:"Female"})
-    else:
-        df["sex_lbl"] = np.nan
-    
-    # Helper function to make table
-    def make_table(df_in, facet_var):
-        sub = df_in.dropna(subset=["diabetes","phys_lbl", facet_var]).copy()
-        g = (sub.groupby([facet_var, "phys_lbl"], observed=True)
-               .agg(n=("diabetes","size"), cases=("diabetes","sum"))
-               .reset_index())
-        g["prev"] = g["cases"] / g["n"]
-        g["phys_lbl"] = pd.Categorical(g["phys_lbl"], ["No","Yes"], ordered=True)
-        if facet_var == "agegroup":
-            g["agegroup"] = pd.Categorical(g["agegroup"], AGE_ORDER, ordered=True)
-        if facet_var == "education_lbl":
-            g["education_lbl"] = pd.Categorical(g["education_lbl"], EDU_ORDER, ordered=True)
-        return g.sort_values([facet_var, "phys_lbl"]).reset_index(drop=True)
-    
-    # Select which table to use
-    if facet_type == "education":
-        tbl = make_table(df, "education_lbl")
-        facet_var = "education_lbl"
-        title_note = "Education"
-    elif facet_type == "age":
-        tbl = make_table(df, "agegroup")
-        facet_var = "agegroup"
-        title_note = "Age Group"
-    else:  # sex
-        tbl = make_table(df, "sex_lbl")
-        facet_var = "sex_lbl"
-        title_note = "Sex"
-    
-    # Create faceted plot
-    fig = px.bar(
-        tbl, x="phys_lbl", y="prev",
-        facet_col=facet_var, facet_col_wrap=3,
-        color="phys_lbl",
-        color_discrete_map={"No": COLOR_NO, "Yes": COLOR_YES},
-        text=tbl["prev"].map(lambda v: f"{v:.0%}"),
-        title=f"Physical Activity vs Diabetes by {title_note}<br><sup>% with diabetes — faceted</sup>"
-    )
-    fig.update_traces(
-        marker_line_width=1, marker_line_color=GRID,
-        textposition="outside",
-        hovertemplate="%{x}<br>%{y:.1%}<extra></extra>",
-        showlegend=False,
-    )
-    fig.for_each_yaxis(lambda a: a.update(title="% Diabetes", tickformat=".0%", dtick=0.10, range=[0,1], gridcolor=GRID))
-    fig.for_each_xaxis(lambda a: a.update(title="Physically Active"))
     fig.update_layout(
-        template="simple_white", 
-        bargap=0.35, 
-        showlegend=False,
-        margin=dict(l=50, r=20, t=90, b=50),
+        title={
+            'text': 'Physical Activity vs. Diabetes Rate by Demographics',
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': {'size': 16}
+        },
+        xaxis=dict(
+            title=x_title,
+            showgrid=False,
+            showline=True,
+            linewidth=1,
+            linecolor='black',
+            mirror=False
+        ),
+        yaxis=dict(
+            title="Diabetes Rate (%)",
+            showgrid=False,
+            showline=True,
+            linewidth=1,
+            linecolor='black',
+            mirror=False,
+            range=[0, 100]
+        ),
+        barmode='group',
         height=600,
-        plot_bgcolor=BACKGROUND,
-        paper_bgcolor=BACKGROUND,
+        legend=dict(
+            title='Physical Activity',
+            orientation='v',
+            yanchor='top',
+            y=1,
+            xanchor='right',
+            x=1.08
+        ),
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        hovermode='closest',
     )
+    
+    fig.update_xaxes(showline=True, linewidth=1, linecolor='black', mirror=False)
+    fig.update_yaxes(showline=True, linewidth=1, linecolor='black', mirror=False, range=[0, 100])
     
     return fig
+

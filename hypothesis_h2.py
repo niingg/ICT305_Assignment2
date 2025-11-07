@@ -12,6 +12,8 @@ import plotly.express as px
 PRIMARY = "#931A23"        # Your brand
 SECONDARY = "#E8C6AE"      # Accent
 GRID = "rgba(0, 0, 0, 0.08)"
+CHART_COLORS = ["#FFF1A4", '#EEC8A3', '#DD9C7C', '#D24C49', '#A64A47', '#931A23']
+
 
 def create_education_health_behaviors_chart(df):
     """
