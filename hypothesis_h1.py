@@ -12,6 +12,7 @@ PRIMARY = "#931A23"        # Your brand
 SECONDARY = "#E8C6AE"      # Accent
 BACKGROUND = "white"
 GRID = "rgba(0, 0, 0, 0.08)"
+CHART_COLORS = ["#FFF1A4", '#EEC8A3', '#DD9C7C', '#D24C49', '#A64A47', '#931A23']
 
 
 def wilson(success, n, z=1.96):
@@ -195,7 +196,7 @@ def create_risk_factors_chart(df):
         y=prev_rb["prevalence"],
         text=(prev_rb["prevalence"]*100).round(1).astype(str) + "%",
         textposition="outside",
-        marker=dict(color=PRIMARY, line=dict(width=1, color=GRID)),
+        marker=dict(color=CHART_COLORS, line=dict(width=1, color=GRID)),
         hovertemplate="<b>%{x}</b><br>Diabetes rate: %{y:.1%}<extra></extra>",
         cliponaxis=False
     ))
