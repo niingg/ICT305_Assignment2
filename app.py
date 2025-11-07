@@ -488,7 +488,7 @@ elif page == "Conclusion":
     
     # Introduction
     st.write("""
-    This analysis explored five hypotheses about diabetes risk factors using the **BRFSS 2015 Health Indicators dataset**. 
+    This analysis explored five hypotheses about diabetes risk factors using the **CDC Diabetes Health Indicators dataset**. 
     This page summarizes the key findings from each hypothesis.
     """)
     st.markdown("---")
@@ -631,7 +631,7 @@ elif page == "Conclusion":
     # SECTION 5: Data Notes
     st.subheader("Data Notes")
     st.write(f"""
-    - **Dataset**: BRFSS 2015 Health Indicators, 50-50 split (diabetes/non-diabetes)
+    - **Dataset**: CDC Diabetes Health Indicators, 50-50 split (diabetes/non-diabetes)
     - **Sample Size**: {df.shape[0]:,} individuals
     - **Variables**: {df.shape[1]} health and demographic indicators
     - **Diabetes Prevalence**: 50% (balanced sample)
