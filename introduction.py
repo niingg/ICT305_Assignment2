@@ -93,7 +93,7 @@ def create_body_diagram():
         if arteries_b64:
             fig.add_layout_image(
                 source=arteries_b64,
-                x=0.25, y=0.83, sizex=0.8, sizey=0.7,
+                x=0.255, y=0.83, sizex=0.8, sizey=0.7,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -106,7 +106,7 @@ def create_body_diagram():
         if pancreas_b64:
             fig.add_layout_image(
                 source=pancreas_b64,
-                x=0.362, y=0.60, sizex=0.09, sizey=0.09,
+                x=0.361, y=0.60, sizex=0.09, sizey=0.09,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -119,7 +119,7 @@ def create_body_diagram():
         if left_kidney_b64:
             fig.add_layout_image(
                 source=left_kidney_b64,
-                x=0.35, y=0.61, sizex=0.08, sizey=0.08,
+                x=0.345, y=0.61, sizex=0.08, sizey=0.08,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -132,7 +132,7 @@ def create_body_diagram():
         if right_kidney_b64:
             fig.add_layout_image(
                 source=right_kidney_b64,
-                x=0.4, y=0.61, sizex=0.08, sizey=0.08,
+                x=0.395, y=0.61, sizex=0.08, sizey=0.08,
                 xref="paper", yref="paper",
                 layer="below",
                 opacity=0.2
@@ -145,7 +145,7 @@ def create_body_diagram():
         if stomach_b64:
             fig.add_layout_image(
                 source=stomach_b64,
-                x=0.339, y=0.70, sizex=0.16, sizey=0.16,
+                x=0.338, y=0.70, sizex=0.16, sizey=0.16,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
