@@ -450,9 +450,9 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
-        - 0 barriers has the lowest diabetes rate and 2 barriers has the highest diabetes rate.
-        - The jump from 0 to 2 barriers shows a clear compounding effect.
-        - Demonstrates that multiple healthcare challenges increase risk, not just add to it.
+        - Surprisingly, the number of access barriers does not have a significant impact on diabetes rates.
+        - Identical rates of diabetes are reported in groups with 0 and 2 barriers, with a minor spike in the group with only 1 barrier.
+        - This implies that access to healthcare does not improve prevention of diabetes.
         """)
 
 # ============================================================================
@@ -734,10 +734,7 @@ elif page == "Conclusion":
     <div class="hypo-card">
     <div class="hypo-title"><span class="emoji">🥦</span> H1: Lifestyle Habits</div>
     <p class="hypo-body">
-        Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
-        These are the most controllable risk factors and represent the strongest opportunities for intervention.
-    </p>
-    <span class="hypo-chip">High leverage for prevention</span>
+        Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors. These are the most controllable risk factors and represent the strongest opportunities for intervention.
     </div>
     """, unsafe_allow_html=True)
 
@@ -745,10 +742,8 @@ elif page == "Conclusion":
     st.markdown("""
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🎓</span> H2: Education</div>
-    <p class="hypo-body hypo-muted">
-        To be completed by your group — exploring how educational attainment affects diabetes risk.
-    </p>
-    <span class="hypo-chip">Action: add group findings</span>
+    <p class="hypo-body">
+        Diabetes prevalence decreases as the level of education increases. Higher education levels also correspond with better lifestyle habits. This implies that there is better knowledge about diabetes prevention with the attainment of formal education.
     </div>
     """, unsafe_allow_html=True)
 
@@ -757,15 +752,7 @@ elif page == "Conclusion":
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🏥</span> H3: Healthcare Access</div>
     <p class="hypo-body">
-        Healthcare access barriers create a powerful barrier to diabetes management and prevention.
-    </p>
-    <ul class="hypo-list">
-        <li><b>Income effect</b>: Lower income → less healthcare access → higher diabetes (clear trend)</li>
-        <li><b>Access barriers</b>: Multiple barriers compound the risk</li>
-        <li><b>Cardiovascular indicators</b>: Strongly predict diabetes risk</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: address disparities</span>
+       Higher rates of diabetes are reported in people with healthcare coverage, indicating that access to subsidized healthcare could encourage formal diagnosis of diabetes. However, the number of access barriers do not have a correlation with diabetes rates, which may suggest that access to healthcare does not guarantee prevention of diabetes.
     </div>
     """, unsafe_allow_html=True)
 
@@ -774,16 +761,7 @@ elif page == "Conclusion":
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🧭</span> H4: Self-Rated Health</div>
     <p class="hypo-body">
-        Subjective health assessments are reliable indicators of diabetes risk.
-    </p>
-    <ul class="hypo-list">
-        <li><b>Health rating</b>: Excellent → Poor shows clear progression</li>
-        <li><b>Unhealthy days</b>: Both mental and physical health matter</li>
-        <li><b>Physical activity</b>: Protective effect across demographics</li>
-        <li><b>Functional limitations</b>: Substantially increase risk</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: holistic management</span>
+        Self-health assessments, while subjective and informal, are reliable indicators of diabetes risk. Individuals who poorly rated their physical and mental health displayed higher rates of diabetes.
     </div>
     """, unsafe_allow_html=True)
 
@@ -792,15 +770,7 @@ elif page == "Conclusion":
     <div class="hypo-card half">
     <div class="hypo-title"><span class="emoji">🫀</span> H5: Pre-existing Conditions</div>
     <p class="hypo-body">
-        Cardiometabolic conditions are strongly linked with diabetes.
-    </p>
-    <ul class="hypo-list">
-        <li><b>BMI</b>: Clear progression from underweight to obese</li>
-        <li><b>Cardiovascular disease</b>: Each condition independently increases risk</li>
-        <li><b>Cumulative effect</b>: Risk increases with multiple conditions</li>
-    </ul>
-    <div class="hr"></div>
-    <span class="hypo-chip">Implication: integrated care</span>
+        Cardiometabolic conditions and obesity are strongly linked with diabetes rates. An increased risk of developing diabetes was observed in higher age demographics, as well as groups with multiple pre-existing conditions.
     </div>
     """, unsafe_allow_html=True)
 
