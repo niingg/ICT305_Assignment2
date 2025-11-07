@@ -134,14 +134,65 @@ if page == "Introduction":
 
     styled_heading("Case Introduction", level=2)
     st.write("""
-    Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. 
-    If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage. 
-
-    Understanding the **risk factors** associated with diabetes is crucial for early detection and prevention. 
-    This dashboard explores key health indicators and their relationship with the likelihood of developing diabetes.
+    Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage.
+             
+    Countries worldwide are grappling with the increasing prevalence of diabetes mellitus, commonly known as diabetes, within their populations. It was reported that 1 in 9 adults worldwide have been diagnosed with the condition in 2025, with the figure projected to grow to 1 in 8 by 2050.
+             
+    A contributing factor to this trend is an increase in diagnosis of Type 2 Diabetes, which has been associated with lifestyle factors such as poor dietary habits and lack of exercise.
     """)
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>💉 Type 1</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Insulin Deficiency</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>💊 Type 2</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Insulin Resistance</span>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
+
+    styled_heading("The Goal", level=2)
+    st.write("""
+    Despite the easy accessibility and availability of healthcare data, there is a lack of tools translating complex datasets into meaningful and actionable insights.
+             
+    This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for audiences with minimal medical knowledge.
+             
+    The five hypotheses in this dashboard are arranged according to the impact these five hypotheses have on the development of diabetes, in the order of least to most impactful.
+             
+    After progressing through the hypotheses, main takeaways from the dashboard can are provided through a summary of the information and recommendations.
+    """)
+
+    styled_heading("Target Audience", level=2)
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>👥 General Public</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Educate on risk factors and recommend actionable lifestyle changes to reduce risk of diabetes
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #F0F8FF; padding: 12px; border-radius: 8px; text-align: center;'>
+            <strong>🏛️ Governments and Policymakers</strong><br>
+            <span style='color: #194875; font-size: 20px;'>Provide insights for the design of public health programmes</span>
+        </div>
+        """, unsafe_allow_html=True)
 
     styled_heading("Dataset Overview", level=2)
     st.write("""
