@@ -21,21 +21,23 @@ COLORS = {
     "header_bg": "#FFE5E5",
 }
 
-# function to use to style all headers
-def styled_heading(text, level=2, color=COLORS["primary"]):
-    """
-    Display a heading with custom color and serif font.
-    
-    Args:
-        text (str): Heading text
-        level (int): 1 for h1, 2 for h2, 3 for h3
-        color (str): Hex color for the heading
-    """
+# function to style headings
+def styled_heading(text, level=2, color="#931A23", align="left"):
+    """Display a heading with color, weight, and alignment."""
     tags = {1: "h1", 2: "h2", 3: "h3"}
     tag = tags.get(level, "h2")
     font_sizes = {1: "32px", 2: "24px", 3: "18px"}
     font_size = font_sizes.get(level, "24px")
-    html = f"<{tag} style='color: {color}; font-size: {font_size};'>{text}</{tag}>"
+    
+    html = f"""
+    <{tag} style='
+        color: {color};
+        font-size: {font_size};
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-align: {align};
+    '>{text}</{tag}>
+    """
     st.markdown(html, unsafe_allow_html=True)
 
 # function to add background colour for header
@@ -129,7 +131,7 @@ styled_header()
 # ==============
 
 if page == "Introduction":
-    styled_heading("Introduction")
+    styled_heading("Introduction", level=1, align="center")
     st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
 
     styled_heading("Case Introduction", level=2)
@@ -246,7 +248,7 @@ if page == "Introduction":
 # =====================
 
 elif page == "**H1**: Lifestyle Habits and Diabetes":
-    styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=2)
+    styled_heading("Hypothesis 1: Lifestyle Habits and Diabetes", level=1, align="center")
     st.write("Wondering how lifestyle habits such as your diet, exercise, and smoking status impact your risk of diabetes? Browse through the visualisations below!")
     st.write("The **first tab** explores an overall view of how all the lifestyles factors listed impacts your diabetes risk.")
     st.write("The **second tab** shows how having 1 or more of these factors together impacts the risk of diabetes.")
@@ -309,7 +311,7 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
 # ===============
 
 elif page == "**H2**: Education and Diabetes":
-    styled_heading("Hypothesis 2: Education and Diabetes", level=2)
+    styled_heading("Hypothesis 2: Education and Diabetes",level=1, align="center")
     st.write("Now that you understand how lifestyle factors affect diabetes, let's dive into demographic influences!")
     st.write("The graph in the **first tab** investigates how education level impacts health behaviors, namely diet, physical activity, and regular checkups.")
     st.write("The **second tab** explores the direct relationship between education level and diabetes prevalence.")
@@ -382,7 +384,7 @@ elif page == "**H2**: Education and Diabetes":
 # ============================================================================
 
 elif page == "**H3**: Healthcare Access and Diabetes":
-    styled_heading("Hypothesis 3: Healthcare Access and Diabetes", level=2)
+    styled_heading("Hypothesis 3: Healthcare Access and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Limited access to healthcare – due to cost barriers, lack of regular care, or low income – 
     is associated with higher rates of diabetes.
@@ -443,7 +445,7 @@ elif page == "**H3**: Healthcare Access and Diabetes":
 # ============================================================================
 
 elif page == "**H4**: Self-Rated Health and Diabetes":
-    styled_heading("Hypothesis 4: Self-Rated Health and Diabetes")
+    styled_heading("Hypothesis 4: Self-Rated Health and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Poor self-rated health and functional limitations – including low general health ratings, 
     more unhealthy days, and difficulty walking – are strongly associated with diabetes.
@@ -518,7 +520,7 @@ elif page == "**H4**: Self-Rated Health and Diabetes":
 # ============================================================================
 
 elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
-    styled_heading("Hypothesis 5: Pre-existing Health Conditions and Diabetes")
+    styled_heading("Hypothesis 5: Pre-existing Health Conditions and Diabetes", level=1, align="center")
     st.write("""
     **Hypothesis**: Individuals with pre-existing cardiometabolic conditions – such as stroke, heart disease or heart attack, 
     high blood pressure, high cholesterol, and elevated BMI – are more likely to be diagnosed with diabetes.
@@ -594,7 +596,7 @@ elif page == "**H5**: Pre-existing Health Conditions and Diabetes":
 # ============================================================================
 
 elif page == "Conclusion":
-    st.markdown("<h2 style='text-align: center;'>Conclusion</h2>", unsafe_allow_html=True)
+    styled_heading("Conclusion", level=1, align="center")
     
     # Introduction
     st.write("""
@@ -652,47 +654,138 @@ elif page == "Conclusion":
     
     # SECTION 2: Detailed Findings
     styled_heading("Detailed Findings by Hypothesis")
-    
-    st.write("""
-    #### **H1: Lifestyle Habits**
-    Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
-    These are the most controllable risk factors and represent the strongest opportunities for intervention.
-    
-    ---
-    
-    #### **H2: Education**
-    [To be completed by your group - exploring how educational attainment affects diabetes risk]
-    
-    ---
-    
-    #### **H3: Healthcare Access**
-    Healthcare access barriers create a powerful barrier to diabetes management and prevention.
-    - **Income effect**: Lower income → less healthcare access → higher diabetes (clear trend)
-    - **Access barriers**: Multiple barriers compound the risk
-    - **Cardiovascular indicators**: Strongly predict diabetes risk
-    - **Implication**: Addressing healthcare disparities is critical
-    
-    ---
-    
-    #### **H4: Self-Rated Health**
-    Subjective health assessments are reliable indicators of diabetes risk.
-    - **Health rating**: Excellent to Poor shows clear progression
-    - **Unhealthy days**: Both mental and physical health matter
-    - **Physical activity**: Protective effect across all demographics
-    - **Functional limitations**: Substantially increase risk
-    - **Implication**: Holistic health management is essential
-    
-    ---
-    
-    #### **H5: Pre-existing Conditions**
-    Cardiometabolic conditions are strongly linked with diabetes.
-    - **BMI**: Shows clear progression from underweight to obese
-    - **Cardiovascular disease**: Each condition independently increases risk
-    - **Cumulative effect**: Risk increases exponentially with multiple conditions
-    - **Implication**: Integrated care for multiple conditions is needed
-    """)
-    
-    st.markdown("---")
+
+
+    # CSS 
+    st.markdown("""
+    <style>
+    :root{
+    --card-bg: #ffffff;
+    --card-border: #ebedf0;
+    --card-shadow: 0 6px 18px rgba(0,0,0,.06);
+    --title: #8a0d12;        /* deep red accent */
+    --muted: #5b616e;
+    --chip-bg: #f5f7fa;
+    --chip-text: #3d4551;
+    }
+    .hypo-grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    margin: 8px 0 4px 0;
+    }
+    .hypo-card{
+    grid-column: span 12;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 18px 18px 14px 18px;
+    box-shadow: var(--card-shadow);
+    }
+    @media (min-width: 900px){
+    .hypo-card.half{ grid-column: span 6; }
+    }
+    .hypo-title{
+    display:flex; align-items:center; gap:10px;
+    font-weight: 800; font-size: 20px; color: var(--title); margin: 0 0 8px 0;
+    }
+    .hypo-title .emoji{ font-size: 22px; }
+    .hypo-body{ color:#111; line-height:1.5; margin: 0 0 8px 0; }
+    .hypo-muted{ color: var(--muted); }
+    .hypo-list{ margin: 6px 0 0 0; padding-left: 20px; }
+    .hypo-chip{
+    display:inline-block; margin-top:10px;
+    background: var(--chip-bg); color: var(--chip-text);
+    border: 1px solid #e6e9ef; border-radius: 999px;
+    padding: 6px 10px; font-size: 12px; font-weight: 600;
+    }
+    .hr{ height: 1px; background: #f0f2f6; margin: 10px 0 4px 0; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- Layout as responsive grid of cards ---
+    st.markdown('<div class="hypo-grid">', unsafe_allow_html=True)
+
+    # H1
+    st.markdown("""
+    <div class="hypo-card">
+    <div class="hypo-title"><span class="emoji">🥦</span> H1: Lifestyle Habits</div>
+    <p class="hypo-body">
+        Modifiable behaviors significantly impact diabetes risk. Smoking, physical inactivity, and poor diet are key factors.
+        These are the most controllable risk factors and represent the strongest opportunities for intervention.
+    </p>
+    <span class="hypo-chip">High leverage for prevention</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H2
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🎓</span> H2: Education</div>
+    <p class="hypo-body hypo-muted">
+        To be completed by your group — exploring how educational attainment affects diabetes risk.
+    </p>
+    <span class="hypo-chip">Action: add group findings</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H3
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🏥</span> H3: Healthcare Access</div>
+    <p class="hypo-body">
+        Healthcare access barriers create a powerful barrier to diabetes management and prevention.
+    </p>
+    <ul class="hypo-list">
+        <li><b>Income effect</b>: Lower income → less healthcare access → higher diabetes (clear trend)</li>
+        <li><b>Access barriers</b>: Multiple barriers compound the risk</li>
+        <li><b>Cardiovascular indicators</b>: Strongly predict diabetes risk</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: address disparities</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H4
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🧭</span> H4: Self-Rated Health</div>
+    <p class="hypo-body">
+        Subjective health assessments are reliable indicators of diabetes risk.
+    </p>
+    <ul class="hypo-list">
+        <li><b>Health rating</b>: Excellent → Poor shows clear progression</li>
+        <li><b>Unhealthy days</b>: Both mental and physical health matter</li>
+        <li><b>Physical activity</b>: Protective effect across demographics</li>
+        <li><b>Functional limitations</b>: Substantially increase risk</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: holistic management</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # H5
+    st.markdown("""
+    <div class="hypo-card half">
+    <div class="hypo-title"><span class="emoji">🫀</span> H5: Pre-existing Conditions</div>
+    <p class="hypo-body">
+        Cardiometabolic conditions are strongly linked with diabetes.
+    </p>
+    <ul class="hypo-list">
+        <li><b>BMI</b>: Clear progression from underweight to obese</li>
+        <li><b>Cardiovascular disease</b>: Each condition independently increases risk</li>
+        <li><b>Cumulative effect</b>: Risk increases with multiple conditions</li>
+    </ul>
+    <div class="hr"></div>
+    <span class="hypo-chip">Implication: integrated care</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)  
+
+    # Soft divider 
+    st.markdown('<div class="hr"></div>', unsafe_allow_html=True)
+
     
     # SECTION 3: Sankey Diagram (NEW!)
     styled_heading("Data Flow & Hypothesis Conclusions")

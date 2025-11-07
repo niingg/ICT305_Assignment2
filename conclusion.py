@@ -174,20 +174,28 @@ def create_sankey_diagram():
             hovertemplate="%{source.label} → %{target.label}<extra></extra>"
         )
     )])
-
+    
     # Update layout for better appearance
     fig.update_layout(
-        font=dict(size=11, color="#000000", family="Arial"),
-        title={
-            'text': "Diabetes Analysis: Data Flow Through Hypotheses to Conclusions",
-            'x': 0.5,
-            'xanchor': 'center',
-            'font': {'size': 20, 'color': "#1F1F1F", 'family': "Arial"}
-        },
-        paper_bgcolor="#F8F9FA",
-        plot_bgcolor="#F8F9FA",
-        height=700,
-        margin=dict(l=20, r=20, t=80, b=20)
+    font=dict(
+        size=11, 
+        color="#000000", 
+        family="Arial"  
+    ),
+    title={
+        'text': "Diabetes Analysis: Data Flow Through Hypotheses to Conclusions",
+        'x': 0.5,
+        'xanchor': 'center',
+        'font': {
+            'size': 20, 
+            'color': "#1F1F1F", 
+            'family': "Arial"
+        }
+    },
+    paper_bgcolor="#F8F9FA",  
+    plot_bgcolor="#F8F9FA",   
+    height=700,               
+    margin=dict(l=20, r=20, t=80, b=20)  
     )
     
     return fig
