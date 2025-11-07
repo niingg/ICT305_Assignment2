@@ -14,6 +14,8 @@ from plotly.subplots import make_subplots
 PRIMARY = "#931A23"        # Your brand
 SECONDARY = "#E8C6AE"      # Accent
 GRID = "rgba(0, 0, 0, 0.08)"
+CHART_COLORS = ['#D24C49', '#A64A47', '#931A23']
+
 
 
 def create_healthcare_coverage_chart(df):
@@ -264,7 +266,7 @@ def create_access_barriers_chart(df):
     fig.add_trace(go.Bar(
         x=barriers_df['Barriers'],
         y=barriers_df['Diabetes Rate (%)'],
-        marker=dict(color='#931A23'),
+        marker=dict(color=CHART_COLORS),
         text=[f"{val:.1f}%" for val in barriers_df['Diabetes Rate (%)']],
         textposition='outside',
         customdata=barriers_df[['Count']],
