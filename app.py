@@ -117,9 +117,9 @@ if page == "Introduction":
     st.write("3. Healthcare Access and Diabetes")
     st.write("4. Self-Rated Health and Diabetes")
     st.write("5. Pre-existing Health Conditions and Diabetes")
-    st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
-
     st.write("")
+    st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
+    
     st.markdown("---")
     st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
 
@@ -192,13 +192,11 @@ elif page == "**H1**: Lifestyle Habits and Diabetes":
 
 elif page == "**H2**: Education and Diabetes":
     st.subheader("Hypothesis 2: Education and Diabetes")
-    st.write("""
-    **Hypothesis**: Higher educational attainment reduces the likelihood of diabetes, both directly through health literacy 
-    and indirectly via healthier behaviours and improved healthcare access.
-    """)
-    st.write("""
-    The visualizations below show how education relates to diabetes risk and health behaviors.
-    """)
+    st.write("Now that you understand how lifestyle factors affect diabetes, let's dive into demographic influences!")
+    st.write("The graph in the **first tab** investigates how education level impacts health behaviors, namely diet, physical activity, and regular checkups.")
+    st.write("The **second tab** explores the direct relationship between education level and diabetes prevalence.")
+    st.write("The **third tab** examines how income and education together influence diabetes risk.")
+    st.write("Lastly, the **fourth tab** illustrates how education level affects lifestyle choices and diabetes rates as a whole.")
     
     # Create tabs for different visualizations
     tab1, tab2, tab3, tab4 = st.tabs([
