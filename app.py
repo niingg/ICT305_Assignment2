@@ -217,26 +217,7 @@ if page == "Introduction":
     """)
 
     # Display a sample of the dataset
-    sample = df.head()
-
-    styled = (
-        sample.style
-            .format("{:g}") 
-            .set_table_styles([
-                # data column headers
-                {"selector": "th.col_heading",
-                "props": [("background-color", "#b22222"),
-                        ("color", "white"), ("font-weight", "700")]},
-                # top-left corner / blank header cell
-                {"selector": "th.blank, th.index_name",
-                "props": [("background-color", "#b22222"),
-                        ("color", "white"), ("font-weight", "700")]}
-            ])
-    )
-
-    st.table(styled)
-    
-
+    st.dataframe(df.head())
 
     st.write("")
     st.write("""
@@ -263,8 +244,8 @@ if page == "Introduction":
             .hide(axis="index")
             .set_table_styles([
                 # Header row: deep red background + white text
-                {"selector": "th.col_heading", "props": [("background-color", "#b22222"), ("color", "white"), ("font-weight", "700")]},
-                {"selector": "thead th",        "props": [("background-color", "#b22222"), ("color", "white"), ("font-weight", "700")]},
+                {"selector": "th.col_heading", "props": [("background-color", "#EEEEEE"), ("color", "grey"), ("font-weight", "500")]},
+                {"selector": "thead th",        "props": [("background-color", "#EEEEEE"), ("color", "grey"), ("font-weight", "500")]},
                 # Optional: nicer cell spacing
                 {"selector": "td",              "props": [("padding", "8px 10px"), ("vertical-align", "top")]},
                 {"selector": "th",              "props": [("padding", "10px")]}
@@ -272,6 +253,7 @@ if page == "Introduction":
     )
 
     st.table(styled)
+
 
 
     # --- Additional Explanation ---
