@@ -224,7 +224,7 @@ if page == "Introduction":
     variables_info = pd.DataFrame({
         "Domain": [
             "Lifestyle Habits", "Demographics", "Healthcare Access",
-            "Self-Rated Health", "PrE-existing Conditions"
+            "Self-Rated Health", "Pre-Existing Conditions"
         ],
         "Variables": [
             "Smoking, Physical Activity, Fruit/Vegetable Intake, Alcohol Consumption",
