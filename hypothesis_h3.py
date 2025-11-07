@@ -120,8 +120,8 @@ def create_healthcare_coverage_chart(df):
             direction='down',
             pad={'r': 10, 't': 10},
             showactive=True,
-            x=0.12,
-            xanchor='left',
+            x=0.52,
+            xanchor='right',
             y=1.15,
             yanchor='top'
         )],
