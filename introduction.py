@@ -425,7 +425,7 @@ def display_body_diagram():
     """)
     
     fig = create_body_diagram()
-    st.plotly_chart(fig, use_container_width=True , use_container_height=True)
+    st.plotly_chart(fig, use_container_width=True , config={'responsive': True})
     
     st.info("""
     💡 **Did you know?**
