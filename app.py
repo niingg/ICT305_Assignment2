@@ -494,15 +494,15 @@ elif page == "Conclusion":
     st.markdown("---")
     
     # SECTION 1: Summary of Findings
-    st.subheader("📊 Summary of Findings")
+    st.subheader("Summary of Findings")
     
     col1, col2, col3, col4, col5 = st.columns(5)
     
     with col1:
         st.markdown(f"""
-        <div style='background-color: #FFE5E5; padding: 12px; border-radius: 8px; text-align: center;'>
+        <div style='background-color: #E8F5E9; padding: 12px; border-radius: 8px; text-align: center;'>
             <strong>H1: Lifestyle</strong><br>
-            <span style='color: #9B1128; font-size: 20px;'>❌ Rejected</span>
+            <span style='color: #738a6e; font-size: 20px;'>✅ Accepted</span>
         </div>
         """, unsafe_allow_html=True)
     
