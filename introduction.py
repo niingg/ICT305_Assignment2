@@ -81,7 +81,7 @@ def create_body_diagram():
         if base_body_b64:
             fig.add_layout_image(
                 source=base_body_b64,
-                x=0.273, y=1, sizex=1, sizey=1,
+                x=0.272, y=1, sizex=1, sizey=1,
                 xref="paper", yref="paper",
                 layer="below"
             )
