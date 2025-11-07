@@ -321,7 +321,10 @@ def create_body_diagram():
                 '<extra></extra>'
             ),
             customdata=[[organ['name'], organ['info'], organ['affected_by']]],
-            hoverlabel=dict(bgcolor="#EEC8A3", bordercolor="#931A23"),
+            hoverlabel=dict(
+                font= dict(color='black'),
+                bgcolor="#EEC8A3",
+                bordercolor="#931A23"),
             showlegend=False,
             visible=False
         ))
