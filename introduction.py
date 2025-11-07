@@ -81,7 +81,7 @@ def create_body_diagram():
         if base_body_b64:
             fig.add_layout_image(
                 source=base_body_b64,
-                x=0.273, y=1, sizex=1, sizey=1,
+                x=0.265, y=1, sizex=1, sizey=1,
                 xref="paper", yref="paper",
                 layer="below"
             )
@@ -197,7 +197,7 @@ def create_body_diagram():
         if brain_b64:
             fig.add_layout_image(
                 source=brain_b64,
-                x=0.35, y=1.02, sizex=0.15, sizey=0.15,
+                x=0.345, y=1.02, sizex=0.15, sizey=0.15,
                 xref="paper", yref="paper",
                 layer="above",
                 opacity=0.2
@@ -387,12 +387,6 @@ def create_body_diagram():
         xaxis=dict(range=[1, 4]),   # X-axis range (min, max)
         yaxis=dict(range=[0, 20]),  # Y-axis range (min, max)
         hovermode='closest',
-        title={
-            'text': 'How Diabetes Affects Your Body',
-            'x': 0.5,
-            'xanchor': 'center',
-            'font': {'size': 20, 'color': '#931A23'}
-        },
         updatemenus=[
             dict(
                 buttons=dropdown_buttons,

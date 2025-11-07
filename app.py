@@ -132,9 +132,16 @@ styled_header()
 
 if page == "Introduction":
     styled_heading("Introduction", level=1, align="center")
-    st.write("Welcome to the Diabetes Risk Factors Dashboard! Here you can explore various factors associated with diabetes risk.")
+    st.markdown("""
+    <div style='text-align: center; font-size: 18px;'>
+        Welcome to the <b>Diabetes Risk Factors Dashboard!</b>
+        Here you can explore various factors associated with diabetes risk.
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")  
 
-    styled_heading("Case Introduction", level=2)
+
+    styled_heading("The Case", level=2)
     st.write("""
     Diabetes is a chronic medical condition that occurs when the body cannot properly regulate blood sugar (glucose) levels. If left unmanaged, it can lead to serious health complications such as heart disease, kidney failure, and nerve damage.
              
@@ -175,9 +182,12 @@ if page == "Introduction":
     After progressing through the hypotheses, main takeaways from the dashboard can are provided through a summary of the information and recommendations.
     """)
 
-    styled_heading("Target Audience", level=2)
+    st.markdown("---")
 
+    styled_heading("Target Audience", level=2, align="center" )
     col1, col2 = st.columns(2)
+    st.markdown("---")
+
     
     with col1:
         st.markdown(f"""
@@ -187,6 +197,7 @@ if page == "Introduction":
             </span>
         </div>
         """, unsafe_allow_html=True)
+        
     
     with col2:
         st.markdown(f"""
@@ -195,7 +206,7 @@ if page == "Introduction":
             <span style='color: #194875; font-size: 20px;'>Provide insights for the design of public health programmes</span>
         </div>
         """, unsafe_allow_html=True)
-
+    
     styled_heading("Dataset Overview", level=2)
     st.write("""
     The dataset used in this analysis is derived from the **CDC Diabetes Health Indicators dataset**, 
@@ -234,6 +245,11 @@ if page == "Introduction":
     st.write("")
     st.write("Our dashboard is organised according to these five hypotheses, with one section for each. Please explore the hypotheses by clicking the buttons in the side navigation bar!")
     st.markdown("---")
+    st.write("For more information about the dataset, please visit the dataset page at https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators")
+
+
+    st.markdown("---")
+
     
     # BODY DIAGRAM - NEW SECTION
     styled_heading("🫀 How Diabetes Affects Your Body")
