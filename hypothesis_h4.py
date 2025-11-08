@@ -50,7 +50,9 @@ def create_health_trends_chart(df):
         fillcolor='rgba(251,227,90, 0.4)',
         mode='lines+markers',
         marker=dict(size=8),
-    ), secondary_y=False)
+    ), secondary_y=False
+        
+        )
     
     # Mental unhealthy days (secondary y-axis)
     fig.add_trace(go.Scatter(
@@ -62,7 +64,9 @@ def create_health_trends_chart(df):
         fillcolor='rgba(147,26,35, 0.4)',
         mode='lines+markers',
         marker=dict(size=8),
-    ), secondary_y=True)
+    ), secondary_y=True
+            
+            )
     
     # Physical unhealthy days (secondary y-axis)
     fig.add_trace(go.Scatter(
@@ -85,18 +89,21 @@ def create_health_trends_chart(df):
         hovermode='x unified',
     )
     
+    # Update the x-axis
     fig.update_xaxes(title_text="General Health Rating (1=Excellent, 5=Poor)")
     
     # Set y-axes titles
     fig.update_yaxes(
-        title=dict(text="Diabetes Rate (%)", font=dict(color="#FBE35A")),
+        title_text="Diabetes Rate (%)",
+        title_font=dict(color="#FBE35A"),
         tickfont=dict(color="#FBE35A"),
         showgrid=False,
         secondary_y=False
     )
     
     fig.update_yaxes(
-        title=dict(text="Average Days (per month)", font=dict(color="#931A23")),
+        title_text="Average Days (per month)",
+        title_font=dict(color="#931A23"),
         tickfont=dict(color="#931A23"),
         showgrid=False,
         secondary_y=True
