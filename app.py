@@ -139,7 +139,7 @@ if page == "Introduction":
     """, unsafe_allow_html=True)
     st.markdown("---")  
     st.info("💡 Recommended settings for the best viewing experience.\n\n"
-    "**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode)**"
+    "**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode**")
     
     st.markdown("---")
     styled_heading("Team Members", level=2)
