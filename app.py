@@ -139,7 +139,7 @@ if page == "Introduction":
     """, unsafe_allow_html=True)
     st.markdown("---")  
     st.info("💡 Recommended settings for the best viewing experience.\n\n"
-    "(**Menu → Settings → ✅ Turn off Wide mode ✅ Use Light mode)**")
+    "(**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode)**")
 
     styled_heading("The Case", level=2)
     st.write("""          
@@ -641,7 +641,7 @@ elif page == "**H5**: Pre-Existing Health Conditions and Diabetes":
     """)
     st.markdown("---")
     st.write("""
-    Finally, with the best saved for the last, we will explore how pre-existing health conditions impact the rate of diabetes development!
+    Finally, we will explore how pre-existing health conditions affect diabetes rates!
     """)
     st.write("Pre-existing conditions include: Stroke, Heart Disease/Attack, High Blood Pressure, High Cholesterol, and Elevated BMI (≥30).")
     st.write("The **first tab** compares the rate of diabetes across individuals who have/don’t have been diagnosed with one of the other four diseases.")
