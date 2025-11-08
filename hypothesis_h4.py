@@ -37,9 +37,10 @@ def create_health_trends_chart(df):
     }) * 100
     grouped_df.index.name = 'General Health'
     
-    fig = go.Figure()
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
     
-    # Diabetes rate
+    # Diabetes rate (primary y-axis)
     fig.add_trace(go.Scatter(
         x=grouped_df.index,
         y=grouped_df['diabetes_binary'],
@@ -47,12 +48,11 @@ def create_health_trends_chart(df):
         line=dict(color="#FBE35A", width=4),
         fill='tozeroy',
         fillcolor='rgba(251,227,90, 0.4)',
-        yaxis='y',
         mode='lines+markers',
         marker=dict(size=8),
-    ))
+    ), secondary_y=False)
     
-    # Mental unhealthy days
+    # Mental unhealthy days (secondary y-axis)
     fig.add_trace(go.Scatter(
         x=grouped_df.index,
         y=grouped_df['menthlth'],
@@ -60,12 +60,11 @@ def create_health_trends_chart(df):
         line=dict(color="#931A23", width=4),
         fill='tozeroy',
         fillcolor='rgba(147,26,35, 0.4)',
-        yaxis='y2',
         mode='lines+markers',
         marker=dict(size=8),
-    ))
+    ), secondary_y=True)
     
-    # Physical unhealthy days
+    # Physical unhealthy days (secondary y-axis)
     fig.add_trace(go.Scatter(
         x=grouped_df.index,
         y=grouped_df['physhlth'],
@@ -73,35 +72,36 @@ def create_health_trends_chart(df):
         line=dict(color="#E8C6AE", width=4),
         fill='tozeroy',
         fillcolor='rgba(232,198,174, 0.4)',
-        yaxis='y2',
         mode='lines+markers',
         marker=dict(size=8),
-    ))
+    ), secondary_y=True)
     
-    # Create axes
+    # Update layout
     fig.update_layout(
         title="Health Metrics Trends by General Health Rating",
         xaxis=dict(title="General Health Rating (1=Excellent, 5=Poor)"),
-        yaxis=dict(
-            title="Diabetes Rate (%)",
-            titlefont=dict(color="#FBE35A"),
-            tickfont=dict(color="#FBE35A"),
-        ),
-        yaxis2=dict(
-            title="Average Days (per month)",
-            titlefont=dict(color="#931A23"),
-            tickfont=dict(color="#931A23"),
-            overlaying="y",
-            side="right"
-        ),
         plot_bgcolor='white',
         paper_bgcolor='white',
         height=500,
         hovermode='x unified',
     )
-
-    # Remove grid lines
-    fig.update_yaxes(showgrid=False)
+    
+    # Set y-axes titles
+    fig.update_yaxes(
+        title_text="Diabetes Rate (%)",
+        titlefont=dict(color="#FBE35A"),
+        tickfont=dict(color="#FBE35A"),
+        showgrid=False,
+        secondary_y=False
+    )
+    
+    fig.update_yaxes(
+        title_text="Average Days (per month)",
+        titlefont=dict(color="#931A23"),
+        tickfont=dict(color="#931A23"),
+        showgrid=False,
+        secondary_y=True
+    )
     
     return fig
 
