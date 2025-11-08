@@ -140,6 +140,44 @@ if page == "Introduction":
     st.markdown("---")  
     st.info("💡 Recommended settings for the best viewing experience.\n\n"
     "(**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode)**")
+    
+    st.markdown("---")
+    styled_heading("Team Members", level=2)
+    
+    col1, col2, col3, col4, col5 =st.columns(5)
+    with col1:
+        st.markdown(f"""
+        <div style='background-color: #FFF1A4; padding: 12px; border-radius: 8px; text-align: center;'>
+            <span style='color: #000000; font-size: 20px;'>Gizella Velica</span>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown(f"""
+        <div style='background-color: #EEC8A3; padding: 12px; border-radius: 8px; text-align: center;'>
+            <span style='color: #000000; font-size: 20px;'>Natthida Onnavong</span>
+        </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown(f"""
+        <div style='background-color: #DD9C7C; padding: 12px; border-radius: 8px; text-align: center;'>
+            <span style='color: #000000; font-size: 20px;'>Regina Suroto Wangsaputri</span>
+        </div>
+        """, unsafe_allow_html=True)
+    with col4:
+        st.markdown(f"""
+        <div style='background-color: #D24C49; padding: 12px; border-radius: 8px; text-align: center;'>
+            <span style='color: #000000; font-size: 20px;'>Salwa Sanaullah Khan</span>
+        </div>
+        """, unsafe_allow_html=True)
+    with col5:
+        st.markdown(f"""
+        <div style='background-color: #A64A47; padding: 12px; border-radius: 8px; text-align: center;'>
+            <span style='color: #000000; font-size: 20px;'>Tan Yee Lin</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    
+    st.markdown("---")  
 
     styled_heading("The Case", level=2)
     st.write("""          
