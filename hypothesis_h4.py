@@ -88,20 +88,18 @@ def create_health_trends_chart(df):
     
     # Set y-axes titles
     fig.update_yaxes(
-        title_text="Diabetes Rate (%)",
-        titlefont=dict(color="#FBE35A"),
+        title=dict(text="Diabetes Rate (%)", font=dict(color="#FBE35A")),
         tickfont=dict(color="#FBE35A"),
         showgrid=False,
         secondary_y=False
     )
     
     fig.update_yaxes(
-        title_text="Average Days (per month)",
-        titlefont=dict(color="#931A23"),
+        title=dict(text="Average Days (per month)", font=dict(color="#931A23")),
         tickfont=dict(color="#931A23"),
         showgrid=False,
         secondary_y=True
-    )
+    )   
     
     return fig
 
