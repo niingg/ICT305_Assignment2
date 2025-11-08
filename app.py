@@ -148,31 +148,31 @@ if page == "Introduction":
     with col1:
         st.markdown(f"""
         <div style='background-color: #FFF1A4; padding: 12px; border-radius: 8px; text-align: center;'>
-            <span style='color: #000000; font-size: 20px;'>Gizella Velica</span>
+            <span style='color: #000000; font-size: 20px;'><b>Gizella<b></span>
         </div>
         """, unsafe_allow_html=True)
     with col2:
         st.markdown(f"""
         <div style='background-color: #EEC8A3; padding: 12px; border-radius: 8px; text-align: center;'>
-            <span style='color: #000000; font-size: 20px;'>Natthida Onnavong</span>
+            <span style='color: #000000; font-size: 20px;'><b>Natthida<b></span>
         </div>
         """, unsafe_allow_html=True)
     with col3:
         st.markdown(f"""
         <div style='background-color: #DD9C7C; padding: 12px; border-radius: 8px; text-align: center;'>
-            <span style='color: #000000; font-size: 20px;'>Regina Suroto Wangsaputri</span>
+            <span style='color: #000000; font-size: 20px;'><b>Regina<b></span>
         </div>
         """, unsafe_allow_html=True)
     with col4:
         st.markdown(f"""
         <div style='background-color: #D24C49; padding: 12px; border-radius: 8px; text-align: center;'>
-            <span style='color: #000000; font-size: 20px;'>Salwa Sanaullah Khan</span>
+            <span style='color: #000000; font-size: 20px;'><b>Salwa<b></span>
         </div>
         """, unsafe_allow_html=True)
     with col5:
         st.markdown(f"""
         <div style='background-color: #A64A47; padding: 12px; border-radius: 8px; text-align: center;'>
-            <span style='color: #000000; font-size: 20px;'>Tan Yee Lin</span>
+            <span style='color: #000000; font-size: 20px;'><b>Yee Lin<b></span>
         </div>
         """, unsafe_allow_html=True)
     
