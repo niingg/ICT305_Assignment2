@@ -210,16 +210,12 @@ if page == "Introduction":
     st.markdown("---")
 
     styled_heading("Our Mission", level=2)
-    st.write("""
-    **The Problem**
-    Despite the easy accessibility and availability of healthcare data, there are few resources that have translated complex datasets into meaningful insights.
-             
-    **Our Goal**
-    This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for users with minimal medical knowledge.
-
-    **The Narrative**         
-    The progression of hypotheses in this dashboard follows the level of impact they have on the potential development of diabetes, in the order of least to most impactful. The conclusion summarises main takeaways from the dashboard and provides actionable recommendations for all target audiences.
-    """)
+    st.write("**The Problem**")
+    st.write("Despite the easy accessibility and availability of healthcare data, there are few resources that have translated complex datasets into meaningful insights.")
+    st.write("**Our Goal**")
+    st.write("This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for users with minimal medical knowledge.")
+    st.write("**The Narrative**")      
+    st.write("The progression of hypotheses in this dashboard follows the level of impact they have on the potential development of diabetes, in the order of least to most impactful. The conclusion summarises main takeaways from the dashboard and provides actionable recommendations for all target audiences.")
 
     st.markdown("---")
 
