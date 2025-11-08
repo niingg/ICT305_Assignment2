@@ -134,11 +134,12 @@ if page == "Introduction":
     st.markdown("""
     <div style='text-align: center; font-size: 18px;'>
         Welcome to the <b>Diabetes Risk Factors Dashboard!</b>
-        Here you can explore various risk factors associated with diabetes.
+        Here you can explore various risk factors associated with diabetes.\n
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")  
-
+    st.info("💡 Recommended settings for the best viewing experience.\n\n"
+    "(**Menu → Settings → ✅ Turn off Wide mode ✅ Use Light mode)**")
 
     styled_heading("The Case", level=2)
     st.write("""          
