@@ -79,12 +79,13 @@ def create_health_trends_chart(df):
     # Update layout
     fig.update_layout(
         title="Health Metrics Trends by General Health Rating",
-        xaxis=dict(title="General Health Rating (1=Excellent, 5=Poor)"),
         plot_bgcolor='white',
         paper_bgcolor='white',
         height=500,
         hovermode='x unified',
     )
+    
+    fig.update_xaxes(title_text="General Health Rating (1=Excellent, 5=Poor)")
     
     # Set y-axes titles
     fig.update_yaxes(
