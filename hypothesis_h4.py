@@ -310,7 +310,7 @@ def create_functional_limitations_chart(df):
             text=[f"{row['Diabetes Rate (%)']:.1f}%"],
             textposition='outside',
             customdata=[[row['Count']]],
-            hovertemplate='<b>%{x}</b><br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0][0]:,}<extra></extra>',
+            hovertemplate='<b>%{x}</b><br>Diabetes Rate: %{y:.1f}%<br>Count: %{customdata[0]:,} <extra></extra>',
             showlegend=False,
         ))
     
@@ -321,7 +321,7 @@ def create_functional_limitations_chart(df):
         height=500,
         plot_bgcolor='white',
         paper_bgcolor='white',
-        hovermode='x unified',
+        hovermode='closest',
         legend=dict(
             title='Number of Conditions',
             orientation='v',
