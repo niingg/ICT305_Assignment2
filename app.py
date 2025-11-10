@@ -139,7 +139,7 @@ if page == "Introduction":
     """, unsafe_allow_html=True)
     st.markdown("---")  
     st.info("💡 Recommended settings for the best viewing experience.\n\n"
-    "(**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode)**")
+    "**Menu → Settings →  ❎ Disable Wide mode ✅ Use Light mode**")
     
     st.markdown("---")
     styled_heading("Team Members", level=2)
@@ -209,14 +209,13 @@ if page == "Introduction":
 
     st.markdown("---")
 
-    styled_heading("The Goal", level=2)
-    st.write("""
-    Despite the easy accessibility and availability of healthcare data, there are few resources that have translated complex datasets into meaningful insights.
-             
-    This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for users with minimal medical knowledge.
-             
-    The progression of hypotheses in this dashboard follows the level of impact they have on the potential development of diabetes, in the order of least to most impactful. The conclusion summarises main takeaways from the dashboard and provides actionable recommendations for all target audiences.
-    """)
+    styled_heading("Our Mission", level=2)
+    st.write("**The Problem**")
+    st.write("Despite the easy accessibility and availability of healthcare data, there are few resources that have translated complex datasets into meaningful insights.")
+    st.write("**Our Goal**")
+    st.write("This dashboard was developed to present facts and figures about risk factors associated with diabetes in an engaging and digestible manner, even for users with minimal medical knowledge.")
+    st.write("**The Narrative**")      
+    st.write("The progression of hypotheses in this dashboard follows the level of impact they have on the potential development of diabetes, in the order of least to most impactful. The conclusion summarises main takeaways from the dashboard and provides actionable recommendations for all target audiences.")
 
     st.markdown("---")
 
