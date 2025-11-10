@@ -571,9 +571,8 @@ elif page == "**H3**: Healthcare Access and Diabetes":
         st.markdown("---")
         styled_heading("Key Insights")
         st.write("""
-        - Diabetes rates are consistently higher among those without healthcare coverage or with cost barriers to doctors.
-        - Low-income groups (<$25k) show the largest gap between “Yes” and “No” responses.
-        - High income groups (>$75k) show much lower diabetes rates and fewer barriers.
+        - At the lowest and highest income groups, there's a smaller gap between diabetes rates.
+        - Larger differences in diabetes rates are seen in people who have an annual income of 10k to 50k. 
         """)
 
     with tab2:
@@ -754,7 +753,6 @@ elif page == "**H5**: Pre-Existing Health Conditions and Diabetes":
         styled_heading("Key Insights")
         st.write("""
         - People with other health problems (like high blood pressure or heart disease) are consistently more likely to have diabetes at every age.
-        - Men (59.8%) have marginally higher rates than women (57.7%).
         - Aging and the presence of more health conditions both increase the likelihood of diabetes.
         - Each additional condition, up to three, substantially increases the risk of diabetes.
         """)
